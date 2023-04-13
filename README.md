@@ -1,3 +1,3 @@
 # 🔌+▶️ plugnplai
 
-Open-source AI plugins manegement
+Open-source AI plugins management
