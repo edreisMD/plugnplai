@@ -1,3 +1,3 @@
 # 🎸 Plug and plAI
 
-Open-source AI plugins management
+Get up and running AI plugins
