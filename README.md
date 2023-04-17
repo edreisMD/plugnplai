@@ -1,3 +1,3 @@
-# 🔌+▶️ plugnplai
+# 🔌+▶️ PlugNPlai
 
 Connect plugins to AI
