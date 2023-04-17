@@ -1,3 +1,3 @@
 # 🎸 Plug and plAI
 
-Get up and running AI plugins
+Add and Manage AI plugins to LLMs
