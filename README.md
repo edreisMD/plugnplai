@@ -1,3 +1,3 @@
-# 🔌+▶️ PlugNPlai
+# 🎸 Plug and plAI
 
-Connect plugins to AI
+Get up and running AI plugins
