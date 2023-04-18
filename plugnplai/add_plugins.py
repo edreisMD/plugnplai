@@ -2,7 +2,7 @@ import json
 import re
 import requests
 from typing import Tuple, Callable, Any
-from call_api import CallApi
+from plugnplai.call_api import CallApi
 
 
 class AddPlugins:
