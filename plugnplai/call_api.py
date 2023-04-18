@@ -2,12 +2,12 @@ import json
 import re
 import requests
 from typing import Tuple
-from load_plugin import ActivePlugins
+from load_plugin import InstallPlugins
 import os
 
 
 class CallApi:
-    def __init__(self, llm_response: str, active_plugins: ActivePlugins):
+    def __init__(self, llm_response: str, active_plugins: InstallPlugins):
         self.llm_response = llm_response
         self.active_plugins = active_plugins
 
@@ -17,7 +17,7 @@ class CallApi:
             raise ValueError("API call not found.")
         api_call = api_split[1]
 
-        body_split = api_split[2].split("<|body|>")
+        body_split = api_split[2].split("<|params|>")
         if len(body_split) < 3:
             raise ValueError("API body not found.")
         api_body_str = body_split[1]
@@ -28,7 +28,7 @@ class CallApi:
             print(f"Error: Invalid JSON in the API body. Content: {api_body_str}")
             return None, None
         
-        self.api_pattern = "<|api|>"+api_split[1]+"<|api|>"+"<|body|>"+body_split[1]+"<|body|>"
+        self.api_pattern = "<|api|>"+api_split[1]+"<|api|>"+"<|params|>"+body_split[1]+"<|params|>"
         self.api_name = api_split[1].split(".")[0]
 
         return api_call, api_body
@@ -89,13 +89,13 @@ class CallApi:
         return self.llm_response
 
 if __name__ == "__main__":
-    # Load the ActivePlugins object as shown in your code
+    # Load the InstallPlugins object as shown in your code
     with open("plugnplai/plugins.json", "r") as f:
         plugins_urls = json.load(f)
-    active_plugins = ActivePlugins.from_urls_list(plugins_urls)
+    active_plugins = InstallPlugins.from_urls_list(plugins_urls)
     print(active_plugins)
 
-    llm_response = "<|api|>KlarnaProducts.productsUsingGET<|api|><|body|>{\n  \"q\": \"shirt\",\n  \"size\": \"1\"\n}<|body|>"
+    llm_response = "<|api|>KlarnaProducts.productsUsingGET<|api|><|params|>{\n  \"q\": \"shirt\",\n  \"size\": \"1\"\n}<|params|>"
     call_api = CallApi(llm_response, active_plugins)
     processed_response = call_api.process()
     print(processed_response)

@@ -130,7 +130,7 @@ def build_prompt_prefix(plugins) -> str:
     prefix_prompt = "Assistant is a large language model."
     prefix_prompt += "\nKnowledge Cutoff: 2021-09"
     prefix_prompt += f"\nCurrent date: {today_date}"
-    prefix_prompt += "\nBellow are the APIs you have access to. Use one when it is useful to complete the task. To call an API add \"namespace.operationId\" between <|api|> tokens followed by the body for the call in between <|body|> tokes, e.g.:\n\n<|api|>speak.explainPhrase<|api|><|body|>{\n \"foreign_phrase\": \"cup\"\n \"learning_language\": \"English\",\n \"native_language\": \"English\",\n \"full_query\": \"what cup means?\"\n}<|body|>"
+    prefix_prompt += "\nBellow are the APIs you have access to. Use one when it is useful to complete the task. To call an API add \"namespace.operationId\" between <|api|> tokens followed by the body for the call in between <|params|> tokes, e.g.:\n\n<|api|>speak.explainPhrase<|api|><|params|>{\n \"foreign_phrase\": \"cup\"\n \"learning_language\": \"English\",\n \"native_language\": \"English\",\n \"full_query\": \"what cup means?\"\n}<|params|>"
 
     for plugin in plugins:
         prefix_prompt += "\n\n"
