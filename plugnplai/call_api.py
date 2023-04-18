@@ -2,7 +2,7 @@ import json
 import re
 import requests
 from typing import Tuple
-from load_plugin import InstallPlugins
+from plugnplai.load_plugin import InstallPlugins
 import os
 
 
