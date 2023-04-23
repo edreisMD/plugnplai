@@ -1,7 +1,9 @@
 import json
 import re
+from typing import Any, Callable, Tuple
+
 import requests
-from typing import Tuple, Callable, Any
+
 from plugnplai.plugin import InstallPlugins
 
 
@@ -87,6 +89,7 @@ class CallApi:
             return response, re.sub(self.api_pattern, str(response), message_to_user)
         return self.llm_response
 
+
 class AddPlugins:
     def __init__(self, active_plugins):
         self.active_plugins = active_plugins
@@ -101,7 +104,7 @@ class AddPlugins:
 
             # Check for the specific pattern (**) in the response
             if "[API]" not in content_llm_response:
-              return llm_response
+                return llm_response
 
             # Use the CallApi class to make an API call based on the response
             # print("has [API]")
@@ -126,11 +129,8 @@ Assistant called a plugin in response to the human message bellow. Use the API r
 {human_message}"""
             args[0][0].content = prompt
             args[0][1].content = ""
-            print(args)
-
             llm_final_response = func(*args, **kwargs)
-            llm_final_response_content = llm_final_response.content
-            
+
             return llm_final_response
 
         return wrapper

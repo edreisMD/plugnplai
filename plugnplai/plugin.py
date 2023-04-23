@@ -8,10 +8,11 @@
 import json
 import os
 from datetime import datetime
-from typing import Optional
+from typing import Any, Callable, Optional
+
 import requests
 from pydantic import BaseModel
-from typing import Any, Callable
+
 from plugnplai.call_api import CallApi
 from plugnplai.utils.load import extract_all_parameters, get_openapi_spec
 
@@ -20,6 +21,7 @@ class ApiConfig(BaseModel):
     type: str
     url: str
     has_user_authentication: Optional[bool] = False
+
 
 class PluginJson(BaseModel):
     """AI Plugin Definition."""
@@ -40,6 +42,7 @@ class PluginJson(BaseModel):
         """Instantiate AIPlugin from a URL."""
         response = requests.get(url).json()
         return cls(**response)
+
 
 def build_prompt_description(pluginJson, open_api_spec) -> str:
     """Build the prompt description for the plugin."""
