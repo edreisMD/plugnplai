@@ -18,7 +18,7 @@ The following utility functions are available in the library:
 - `get_plugin_manifest(url)`: Get the AI plugin manifest from the specified plugin URL.
 - `get_openapi_url(url, manifest)`: Get the OpenAPI URL from the plugin manifest.
 - `get_openapi_spec(openapi_url)`: Get the OpenAPI specification from the specified OpenAPI URL.
-- `spec_from_url(url)`: Get the OpenAPI specification from the specified plugin URL.
+- `from_url(url)`: Returns the Manifest and OpenAPI specification from the plugin URL.
 
 ### Example
 
@@ -30,20 +30,8 @@ import plugnplai
 # Get a list of available plugins
 plugins = plugnplai.get_plugins()
 
-# Get the manifest for the first plugin
-manifest = plugnplai.get_plugin_manifest(plugins[0])
-
-# Get the OpenAPI URL from the manifest
-openapi_url = plugnplai.get_openapi_url(plugins[0], manifest)
-
-# Get the OpenAPI specification
-openapi_spec = plugnplai.get_openapi_spec(openapi_url)
-
-# Extract all parameters from the OpenAPI specification
-all_parameters = plugnplai.extract_all_parameters(openapi_spec)
-
-# Print the extracted parameters
-print(all_parameters)
+# Get the Manifest and the OpenAPI specification from the plugin URL one 
+manifest, openapi_spec = spec_from_url(plugins[0])
 ```
 
 ## Contributing
