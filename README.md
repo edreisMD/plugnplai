@@ -1,4 +1,4 @@
-# 🎸 Plug and PlAI
+# 🎸 Plug and PLAI
 
 Plug and PlAI is an open source library that allows you to manage AI plugins. It provides utility functions to load available plugins, get plugin manifests, and extract OpenAPI specifications.
 
