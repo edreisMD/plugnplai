@@ -13,7 +13,7 @@ from typing import Optional
 import requests
 from pydantic import BaseModel
 
-from plugnplai.utils.utils import extract_all_parameters, get_openapi_spec
+from plugnplai.utils.load import extract_all_parameters, get_openapi_spec
 
 
 class ApiConfig(BaseModel):

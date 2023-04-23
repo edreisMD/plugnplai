@@ -1,7 +1,7 @@
 from plugnplai.add_plugins import AddPlugins
 from plugnplai.call_api import CallApi
 from plugnplai.load_plugin import InstallPlugins, Plugin, PluginJson
-from plugnplai.utils.utils import get_plugin_manifest, get_plugins
+from plugnplai.utils.load import get_plugin_manifest, get_plugins
 
 __all__ = [
     "CallApi",
