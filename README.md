@@ -46,6 +46,7 @@ all_parameters = plugnplai.extract_all_parameters(openapi_spec)
 
 # Print the extracted parameters
 print(all_parameters)
+```
 
 ## Contributing
 
