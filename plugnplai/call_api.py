@@ -1,9 +1,10 @@
 import json
 import re
-import requests
 from typing import Tuple
+
+import requests
+
 from plugnplai.load_plugin import InstallPlugins
-import os
 
 
 class CallApi:
@@ -12,12 +13,12 @@ class CallApi:
         self.active_plugins = active_plugins
 
     def extract_command(self) -> Tuple[str, str]:
-        api_split = self.llm_response.split("<|api|>")
+        api_split = self.llm_response.split("[API]")
         if len(api_split) < 3:
             raise ValueError("API call not found.")
         api_call = api_split[1]
 
-        body_split = api_split[2].split("<|params|>")
+        body_split = api_split[2].split("[PARAMS]")
         if len(body_split) < 3:
             raise ValueError("API body not found.")
         api_body_str = body_split[1]
@@ -27,8 +28,8 @@ class CallApi:
         except json.JSONDecodeError:
             print(f"Error: Invalid JSON in the API body. Content: {api_body_str}")
             return None, None
-        
-        self.api_pattern = "<|api|>"+api_split[1]+"<|api|>"+"<|params|>"+body_split[1]+"<|params|>"
+
+        self.api_pattern = "[API]" + api_split[1] + "[API]" + "[PARAMS]" + body_split[1] + "[PARAMS]"
         self.api_name = api_split[1].split(".")[0]
 
         return api_call, api_body
@@ -72,14 +73,14 @@ class CallApi:
             print(f"Full response: {response}")
             return None
 
-        return json_data    
+        return json_data
 
     def process(self) -> str:
         try:
             api_call, api_body = self.extract_command()
         except ValueError as e:
             print(e)
-            return self.llm_response.split("<|api|>")[0] + str(e)
+            return self.llm_response.split("[API]")[0] + str(e)
         if api_call:
             request = self.build_request(api_call, api_body)
             response = self.make_request(request)
@@ -88,6 +89,7 @@ class CallApi:
             return response, re.sub(self.api_pattern, str(response), message_to_user)
         return self.llm_response
 
+
 if __name__ == "__main__":
     # Load the InstallPlugins object as shown in your code
     with open("plugnplai/plugins.json", "r") as f:
@@ -95,7 +97,7 @@ if __name__ == "__main__":
     active_plugins = InstallPlugins.from_urls_list(plugins_urls)
     print(active_plugins)
 
-    llm_response = "<|api|>KlarnaProducts.productsUsingGET<|api|><|params|>{\n  \"q\": \"shirt\",\n  \"size\": \"1\"\n}<|params|>"
+    llm_response = '[API]KlarnaProducts.productsUsingGET[API][PARAMS]{\n  "q": "shirt",\n  "size": "1"\n}[PARAMS]'
     call_api = CallApi(llm_response, active_plugins)
     processed_response = call_api.process()
     print(processed_response)

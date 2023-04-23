@@ -1,7 +1,5 @@
-import json
-import re
-import requests
-from typing import Tuple, Callable, Any
+from typing import Any, Callable
+
 from plugnplai.call_api import CallApi
 
 
@@ -15,7 +13,7 @@ class AddPlugins:
             llm_response = func(*args, **kwargs)
 
             # Check for the specific pattern (**) in the response
-            if "**" not in llm_response:
+            if "[API]" not in llm_response:
                 return llm_response
 
             # Use the CallApi class to make an API call based on the response

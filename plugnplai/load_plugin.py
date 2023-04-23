@@ -5,19 +5,22 @@
 # URL: https://github.com/hwchase17/langchain/blob/master/langchain/tools/plugin.py
 # Accessed on: 04/12/2023
 
-import os
-import requests
 import json
-import yaml
-from typing import Optional
-from pydantic import BaseModel
+import os
 from datetime import datetime
+from typing import Optional
+
+import requests
+from pydantic import BaseModel
+
+from plugnplai.utils.load import extract_all_parameters, get_openapi_spec
 
 
 class ApiConfig(BaseModel):
     type: str
     url: str
     has_user_authentication: Optional[bool] = False
+
 
 class PluginJson(BaseModel):
     """AI Plugin Definition."""
@@ -39,52 +42,64 @@ class PluginJson(BaseModel):
         response = requests.get(url).json()
         return cls(**response)
 
-def marshal_spec(txt: str) -> dict:
-    """Convert the yaml or json serialized spec to a dict."""
-    try:
-        return json.loads(txt)
-    except json.JSONDecodeError:
-        return yaml.safe_load(txt)
 
 def build_prompt_description(pluginJson, open_api_spec) -> str:
-        """Build the prompt description for the plugin."""
+    """Build the prompt description for the plugin."""
 
-        prompt_description = ""
+    parameters_dict = extract_all_parameters(open_api_spec)
 
-        summary_plugin = f"// {pluginJson.description_for_model}"
-        prompt_description += summary_plugin
-        namespace_title = f"\nnamespace {pluginJson.name_for_model}"+" {"
-        prompt_description += namespace_title
-        content_paths = open_api_spec["paths"]
-        
-        for path, methods in content_paths.items():
-            for method, info in methods.items():
-                summary_method = f"\n\n// {info['summary']}"
-                prompt_description += summary_method
+    prompt_description = ""
 
-                if "parameters" in info:
-                    parameters = info["parameters"]
-                    parametersDict = {}
-                    for parameter in parameters:
-                        par_name = parameter['name']
-                        par_type = parameter['schema']['type']
-                        parametersDict[par_name] = par_type
+    summary_plugin = f"// {pluginJson.description_for_model}"
+    prompt_description += summary_plugin
+    namespace_title = f"\nnamespace {pluginJson.name_for_model}" + " {"
+    prompt_description += namespace_title
 
-                    parametersStr = f"_: {parametersDict}"
-                else:
-                    parametersStr = ""
+    for operationId in parameters_dict:
+        info = parameters_dict[operationId]
+        summary_method = f"\n\n// {info['summary']}"
+        prompt_description += summary_method
 
-                method_schema = f"\noperationId {info['operationId']} = ({parametersStr}) => any" 
+        parameters = info["parameters"]
+        parametersDict = {}
+        for parameter in parameters:
+            par_type = parameters[parameter]["schema"]["type"]
+            parametersDict[parameter] = par_type
+        parametersStr = f"_: {parametersDict}"
+        method_schema = f"\noperationId {operationId} = ({parametersStr}) => any"
+        prompt_description += method_schema
 
-                prompt_description += method_schema 
+    prompt_end = "\n}"
+    prompt_description += prompt_end
 
-        prompt_end = "\n}"
-        prompt_description += prompt_end
-            
-        return prompt_description
+    return prompt_description
+
+    # for method, info in methods.items():
+    #     if "summary" in info:
+    #         summary_method = f"\n\n// {info['summary']}"
+    #     else:
+    #         summary_method = "\n\n"
+    #     prompt_description += summary_method
+
+    #     if "parameters" in info:
+    #         parameters = info["parameters"]
+    #         parametersDict = {}
+    #         for parameter in parameters:
+    #             par_name = parameter['name']
+    #             par_type = parameter['schema']['type']
+    #             parametersDict[par_name] = par_type
+
+    #         parametersStr = f"_: {parametersDict}"
+    #     else:
+    #         parametersStr = ""
+
+    #     method_schema = f"\noperationId {info['operationId']} = ({parametersStr}) => any"
+
+    #     prompt_description += method_schema
+
 
 class Plugin(BaseModel):
-    
+
     name: str
     url: str
     description_for_model: str
@@ -106,18 +121,17 @@ class Plugin(BaseModel):
                 pluginJson.api.url = url + pluginJson.api.url
             print(pluginJson.api.url)
 
-        open_api_spec_str = requests.get(pluginJson.api.url).text
-        open_api_spec = marshal_spec(open_api_spec_str)
+        open_api_spec = get_openapi_spec(pluginJson.api.url)
 
         prompt = build_prompt_description(pluginJson, open_api_spec)
 
         return cls(
             name=pluginJson.name_for_model,
-            url = url,
+            url=url,
             description_for_model=pluginJson.description_for_model,
             plugin_json=pluginJson,
             prompt=prompt,
-            api_spec=open_api_spec
+            api_spec=open_api_spec,
         )
 
 
@@ -130,18 +144,31 @@ def build_prompt_prefix(plugins) -> str:
     prefix_prompt = "Assistant is a large language model."
     prefix_prompt += "\nKnowledge Cutoff: 2021-09"
     prefix_prompt += f"\nCurrent date: {today_date}"
-    prefix_prompt += "\nBellow are the APIs you have access to. Use one when it is useful to complete the task. To call an API add \"namespace.operationId\" between <|api|> tokens followed by the body for the call in between <|params|> tokes, e.g.:\n\n<|api|>speak.explainPhrase<|api|><|params|>{\n \"foreign_phrase\": \"cup\"\n \"learning_language\": \"English\",\n \"native_language\": \"English\",\n \"full_query\": \"what cup means?\"\n}<|params|>"
-
+    prefix_prompt += "\nBellow are the APIs you have access to. Use one when it is useful to complete the task."
+    prefix_prompt += 'To call an API write "namespace.operationId" between [API] followed by the parameters for the call between [PARAMS] in the response to the user, following this pattern:'
+    prefix_prompt += """
+[API]namespace.operationId[API]
+[PARAMS]
+{
+"parameter1": "query1",
+"parameter2": "query2",
+"parameter3": "query3"
+}
+[PARAMS]
+"""
+    n = 1
     for plugin in plugins:
-        prefix_prompt += "\n\n"
+        prefix_prompt += "\n\n// Plugin " + str(n) + ":\n\n"
         prefix_prompt += plugin.prompt
+        n += 1
     return prefix_prompt
+
 
 class InstallPlugins(BaseModel):
 
     Plugins: list
     Prompt: str
-    
+
     @classmethod
     def from_urls_list(cls, urls: list) -> list:
         """Load the plugins from list."""
