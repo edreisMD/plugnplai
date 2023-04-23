@@ -1,10 +1,8 @@
 import json
 import re
-from typing import Tuple
-
 import requests
-
-from plugnplai.load_plugin import InstallPlugins
+from typing import Tuple, Callable, Any
+from plugnplai.plugin import InstallPlugins
 
 
 class CallApi:
@@ -89,15 +87,50 @@ class CallApi:
             return response, re.sub(self.api_pattern, str(response), message_to_user)
         return self.llm_response
 
+class AddPlugins:
+    def __init__(self, active_plugins):
+        self.active_plugins = active_plugins
 
-if __name__ == "__main__":
-    # Load the InstallPlugins object as shown in your code
-    with open("plugnplai/plugins.json", "r") as f:
-        plugins_urls = json.load(f)
-    active_plugins = InstallPlugins.from_urls_list(plugins_urls)
-    print(active_plugins)
+    def __call__(self, func: Callable[..., Any]) -> Callable[..., Any]:
+        def wrapper(*args, **kwargs) -> Any:
+            print(args)
+            # Call the original function (GPT-4 API call)
+            llm_response = func(*args, **kwargs)
+            content_llm_response = llm_response.content
+            print(f"first llm response: {content_llm_response}")
 
-    llm_response = '[API]KlarnaProducts.productsUsingGET[API][PARAMS]{\n  "q": "shirt",\n  "size": "1"\n}[PARAMS]'
-    call_api = CallApi(llm_response, active_plugins)
-    processed_response = call_api.process()
-    print(processed_response)
+            # Check for the specific pattern (**) in the response
+            if "[API]" not in content_llm_response:
+              return llm_response
+
+            # Use the CallApi class to make an API call based on the response
+            # print("has [API]")
+            call_api = CallApi(content_llm_response, self.active_plugins)
+            api_response, message_to_user = call_api.process()
+            print(message_to_user)
+            print(api_response)
+
+            human_message = args[0][1].content
+
+            prompt = f"""
+Assistant is a large language model with access to plugins.\nKnowledge Cutoff: 2021-09\nCurrent date: 2023-04-19
+
+Assistant called a plugin in response to the human message bellow. Use the API response to write a comprehensive human-readble response for the human message:
+[Plugin API request]
+{content_llm_response}
+
+[API response]
+{api_response}
+
+[Human message]
+{human_message}"""
+            args[0][0].content = prompt
+            args[0][1].content = ""
+            print(args)
+
+            llm_final_response = func(*args, **kwargs)
+            llm_final_response_content = llm_final_response.content
+            
+            return llm_final_response
+
+        return wrapper

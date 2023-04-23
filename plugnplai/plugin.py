@@ -9,10 +9,10 @@ import json
 import os
 from datetime import datetime
 from typing import Optional
-
 import requests
 from pydantic import BaseModel
-
+from typing import Any, Callable
+from plugnplai.call_api import CallApi
 from plugnplai.utils.load import extract_all_parameters, get_openapi_spec
 
 
@@ -20,7 +20,6 @@ class ApiConfig(BaseModel):
     type: str
     url: str
     has_user_authentication: Optional[bool] = False
-
 
 class PluginJson(BaseModel):
     """AI Plugin Definition."""
@@ -41,7 +40,6 @@ class PluginJson(BaseModel):
         """Instantiate AIPlugin from a URL."""
         response = requests.get(url).json()
         return cls(**response)
-
 
 def build_prompt_description(pluginJson, open_api_spec) -> str:
     """Build the prompt description for the plugin."""
@@ -189,3 +187,26 @@ if __name__ == "__main__":
     with open("plugnplai/plugins.json", "r") as f:
         plugins_urls = json.load(f)
     plugins = InstallPlugins.from_urls_list(plugins_urls)
+
+
+class AddPlugins:
+    def __init__(self, active_plugins):
+        self.active_plugins = active_plugins
+
+    def __call__(self, func: Callable[..., Any]) -> Callable[..., Any]:
+        def wrapper(*args, **kwargs) -> Any:
+            # Call the original function (GPT-4 API call)
+            llm_response = func(*args, **kwargs)
+
+            # Check for the specific pattern (**) in the response
+            if "[API]" not in llm_response:
+                return llm_response
+
+            # Use the CallApi class to make an API call based on the response
+            call_api = CallApi(llm_response, self.active_plugins)
+            response, message_to_user = call_api.process()
+
+            # Call the original function again with the result of the API call
+            return func(message_to_user, **kwargs)
+
+        return wrapper
