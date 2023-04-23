@@ -49,7 +49,7 @@ def spec_from_url(url):
     manifest = get_plugin_manifest(url)
     openapi_url = get_openapi_url(url, manifest)
     openapi_spec = get_openapi_spec(openapi_url)
-    return openapi_spec
+    return manifest, openapi_spec
 
 
 def extract_parameters(openapi_spec, path, method):
