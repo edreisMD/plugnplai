@@ -30,7 +30,7 @@ import plugnplai
 # Get a list of available plugins
 plugins = plugnplai.get_plugins()
 
-# Get the Manifest and the OpenAPI specification from the plugin URL one 
+# Get the Manifest and the OpenAPI specification from the plugin URL 
 manifest, openapi_spec = spec_from_url(plugins[0])
 ```
 
