@@ -14,13 +14,11 @@ You can install Plug and PlAI using pip:
 
 The following utility functions are available in the library:
 
-- `get_plugins(url)`: Get a list of available plugins from the specified URL.
+- `get_plugins(url)`: Get a list of available plugins from a plugins repository, standard URL = https://www.plugplai.com/_functions/getUrls.
 - `get_plugin_manifest(url)`: Get the AI plugin manifest from the specified plugin URL.
 - `get_openapi_url(url, manifest)`: Get the OpenAPI URL from the plugin manifest.
-- `get_openapi_spec(openapi_url)`: Get the OpenAPI specification from the specified URL.
+- `get_openapi_spec(openapi_url)`: Get the OpenAPI specification from the specified OpenAPI URL.
 - `spec_from_url(url)`: Get the OpenAPI specification from the specified plugin URL.
-- `extract_parameters(openapi_spec, path, method)`: Extract parameters from the OpenAPI specification for a specific path and method.
-- `extract_all_parameters(openapi_spec)`: Extract all parameters from the OpenAPI specification.
 
 ### Example
 
