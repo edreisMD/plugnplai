@@ -1,6 +1,7 @@
 import json
-import jsonref
 import os
+
+import jsonref
 import requests
 import yaml
 
