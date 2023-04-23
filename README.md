@@ -34,21 +34,6 @@ plugins = plugnplai.get_plugins()
 manifest, openapi_spec = spec_from_url(plugins[0])
 ```
 
-## Contributing
-
-We welcome contributions to Plug and PlAI! If you're interested in contributing, please follow these steps:
-
-1. Fork the repository on GitHub.
-2. Create a branch for your changes.
-3. Make your changes and commit them to your branch.
-4. Submit a pull request to the main repository.
-
-Before submitting your pull request, please ensure that your code adheres to the coding standards of the project and that any new features or changes are accompanied by appropriate documentation and tests.
-
-## License
-
-Plug and PlAI is released under the MIT License. By contributing to Plug and PlAI, you agree that your contributions will be licensed under the same license. For more details, see the [LICENSE](LICENSE) file in the repository.
-
 ## Links
 
 - GitHub Repository: [https://github.com/edreisMD/plugnplai](https://github.com/edreisMD/plugnplai)
