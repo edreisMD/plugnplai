@@ -14,7 +14,7 @@ import requests
 from pydantic import BaseModel
 
 from plugnplai.call_api import CallApi
-from plugnplai.utils.load import extract_all_parameters, get_openapi_spec
+from plugnplai.load import extract_all_parameters, get_openapi_spec
 
 
 class ApiConfig(BaseModel):
