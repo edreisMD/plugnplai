@@ -29,7 +29,9 @@ class CallApi:
             print(f"Error: Invalid JSON in the API body. Content: {api_body_str}")
             return None, None
 
-        self.api_pattern = "[API]" + api_split[1] + "[API]" + "[PARAMS]" + body_split[1] + "[PARAMS]"
+        self.api_pattern = (
+            "[API]" + api_split[1] + "[API]" + "[PARAMS]" + body_split[1] + "[PARAMS]"
+        )
         self.api_name = api_split[1].split(".")[0]
 
         return api_call, api_body

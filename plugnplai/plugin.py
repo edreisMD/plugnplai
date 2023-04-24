@@ -8,12 +8,11 @@
 import json
 import os
 from datetime import datetime
-from typing import Any, Callable, Optional
+from typing import Optional
 
 import requests
 from pydantic import BaseModel
 
-from plugnplai.call_api import CallApi
 from plugnplai.load import extract_all_parameters, get_openapi_spec
 
 
@@ -179,6 +178,7 @@ class InstallPlugins(BaseModel):
             plugins.append(Plugin.plugin_from_url(url))
         prompt = build_prompt_prefix(plugins)
         return cls(Plugins=plugins, Prompt=prompt)
+
 
 # if __name__ == "__main__":
 #     # test one case
