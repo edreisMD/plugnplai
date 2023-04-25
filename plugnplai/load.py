@@ -6,7 +6,9 @@ import requests
 import yaml
 
 
-def get_plugins(filter: str = None, base_url: str = "https://www.plugplai.com/_functions/getUrls"):
+def get_plugins(
+    filter: str = None, base_url: str = "https://www.plugplai.com/_functions/getUrls"
+):
     # Construct the endpoint URL based on the filter argument
     if filter in ["working", "ChatGPT"]:
         url = f'{base_url.strip("/")}/{filter}'
