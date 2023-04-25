@@ -6,7 +6,7 @@ Plug and PlAI is an open source library that allows you to manage AI plugins. It
 
 You can install Plug and PlAI using pip:
 
-`pip install git+https://github.com/edreisMD/plugnplai`
+`pip install plugnplai`
 
 ## Usage
 
