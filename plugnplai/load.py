@@ -6,9 +6,21 @@ import requests
 import yaml
 
 
-def get_plugins(url: str = "https://www.plugplai.com/_functions/getUrls"):
-    response = requests.get(url).json()
-    return response
+def get_plugins(filter: str = None, base_url: str = "https://www.plugplai.com/_functions/getUrls"):
+    # Construct the endpoint URL based on the filter argument
+    if filter in ["working", "ChatGPT"]:
+        url = f'{base_url.strip("/")}/{filter}'
+    else:
+        url = base_url
+    # Make the HTTP GET request
+    response = requests.get(url)
+    # Check if the response status code is successful (200 OK)
+    if response.status_code == 200:
+        # Parse the JSON response and return the result
+        return response.json()
+    else:
+        # Handle unsuccessful responses
+        return f"An error occurred: {response.status_code} {response.reason}"
 
 
 # given a plugin url, get the ai-plugin.json manifest, in "/.well-known/ai-plugin.json"
