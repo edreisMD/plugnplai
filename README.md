@@ -29,8 +29,15 @@ Here is an example of how to use the utility functions:
 ```python
 import plugnplai
 
-# Get a list of available plugins
-plugins = plugnplai.get_plugins()
+# Get all plugins from plugnplai.com
+urls = plugnplai.get_plugins()
+
+#  Get ChatGPT plugins - only ChatGPT verified plugins
+urls = plugnplai.get_plugins(filter = 'ChatGPT')
+
+#  Get working plugins - only tested plugins (in progress)
+urls = plugnplai.get_plugins(filter = 'working')
+
 
 # Get the Manifest and the OpenAPI specification from the plugin URL 
 manifest, openapi_spec = spec_from_url(plugins[0])
