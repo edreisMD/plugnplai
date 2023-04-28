@@ -1,6 +1,6 @@
-# 🎸 Plug and PLAI
+# 🎸 Plug and Plai
 
-Plug and PlAI is an open source library that allows you to manage AI plugins. It provides utility functions to load available plugins, get plugin manifests, and extract OpenAPI specifications.
+Plug and PlAI is an open source library aiming to make it very easy to incorporate AI plugins to open source LLMs. It provides utility functions to load available plugins, get plugin manifests, and extract OpenAPI specifications.
 
 ## Installation
 
@@ -34,8 +34,11 @@ plugins = plugnplai.get_plugins()
 manifest, openapi_spec = spec_from_url(plugins[0])
 ```
 
+## Contributing
+
+Plug and PlAI is an open source library, and we welcome contributions from the entire community. If you're interested in contributing to the project, please feel free to fork, submit pull requests, report issues, or suggest new features.
+
 ## Links
 
-- GitHub Repository: [https://github.com/edreisMD/plugnplai](https://github.com/edreisMD/plugnplai)
-- Plugins database: [https://plugplai.com/](https://plugplai.com/)
-- Database API: [https://plugnplai.github.io/](https://plugnplai.github.io/)
+- Plugins directory: [https://plugplai.com/](https://plugplai.com/)
+- API reference: [https://plugnplai.github.io/](https://plugnplai.github.io/)
