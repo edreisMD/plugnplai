@@ -45,7 +45,7 @@ manifest, openapi_spec = spec_from_url(plugins[0])
 
 ## Contributing
 
-Plug and PlAI is an open source library, and we welcome contributions from the entire community. If you're interested in contributing to the project, please feel free to fork, submit pull requests, report issues, or suggest new features.
+Plug and Plai is an open source library, and we welcome contributions from the entire community. If you're interested in contributing to the project, please feel free to fork, submit pull requests, report issues, or suggest new features.
 
 ## Links
 
