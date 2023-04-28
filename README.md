@@ -1,6 +1,8 @@
 # 🎸 Plug and Plai
 
-Plug and PlAI is an open source library aiming to make it very easy to incorporate AI plugins to open source LLMs. It provides utility functions to load available plugins, get plugin manifests, and extract OpenAPI specifications.
+Plug and Plai is an open source library aiming to simplify the integration of AI plugins into open-source language models (LLMs). 
+
+It provides functions to get a list of active plugins from plugnplai.com directory, as well as utility functions to load available plugins, get plugin manifests, and extract OpenAPI specifications.
 
 ## Installation
 
