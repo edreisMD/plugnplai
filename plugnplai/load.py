@@ -7,10 +7,10 @@ import yaml
 
 
 def get_plugins(
-    filter: str = None, provider: str = "plugplai"
+    filter: str = None, provider: str = "plugnplai"
 ):
-    if provider == "plugplai":
-        base_url = "https://www.plugplai.com/_functions/getUrls"
+    if provider == "plugnplai":
+        base_url = "https://www.plugnplai.com/_functions/getUrls"
         # Construct the endpoint URL based on the filter argument
         if filter in ["working", "ChatGPT"]:
             url = f'{base_url.strip("/")}/{filter}'
