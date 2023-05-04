@@ -7,23 +7,33 @@ import yaml
 
 
 def get_plugins(
-    filter: str = None, base_url: str = "https://www.plugplai.com/_functions/getUrls"
+    filter: str = None, provider: str = "plugplai"
 ):
-    # Construct the endpoint URL based on the filter argument
-    if filter in ["working", "ChatGPT"]:
-        url = f'{base_url.strip("/")}/{filter}'
-    else:
-        url = base_url
-    # Make the HTTP GET request
-    response = requests.get(url)
-    # Check if the response status code is successful (200 OK)
-    if response.status_code == 200:
-        # Parse the JSON response and return the result
-        return response.json()
-    else:
-        # Handle unsuccessful responses
-        return f"An error occurred: {response.status_code} {response.reason}"
-
+    if provider == "plugplai":
+        base_url = "https://www.plugplai.com/_functions/getUrls"
+        # Construct the endpoint URL based on the filter argument
+        if filter in ["working", "ChatGPT"]:
+            url = f'{base_url.strip("/")}/{filter}'
+        else:
+            url = base_url
+        # Make the HTTP GET request
+        response = requests.get(url)
+        # Check if the response status code is successful (200 OK)
+        if response.status_code == 200:
+            # Parse the JSON response and return the result
+            return response.json()
+        else:
+            # Handle unsuccessful responses
+            return f"An error occurred: {response.status_code} {response.reason}"
+    elif provider == "pluginso":
+        url = "https://plugin.so/api/plugins/list"
+        response = requests.get(url)
+        if response.status_code == 200:
+                # Parse the JSON response and return the result
+            return [f"https://{entry['domain']}" for entry in response.json()]
+        else:
+            # Handle unsuccessful responses
+            return f"An error occurred: {response.status_code} {response.reason}"
 
 # given a plugin url, get the ai-plugin.json manifest, in "/.well-known/ai-plugin.json"
 def get_plugin_manifest(url: str):
