@@ -40,7 +40,7 @@ urls = plugnplai.get_plugins(filter = 'working')
 
 
 # Get the Manifest and the OpenAPI specification from the plugin URL 
-manifest, openapi_spec = spec_from_url(plugins[0])
+manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```
 
 ## Contributing
