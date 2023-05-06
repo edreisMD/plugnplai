@@ -51,5 +51,5 @@ Plug and Plai is an open source library, and we welcome contributions from the e
 
 ## Links
 
-- Plugins directory: [https://plugplai.com/](https://plugplai.com/)
+- Plugins directory: [https://plugnplai.com/](https://plugnplai.com/)
 - API reference: [https://plugnplai.github.io/](https://plugnplai.github.io/)
