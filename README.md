@@ -48,7 +48,7 @@ manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```
 
 #### Plugins Retrieval
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/docs/examples/plugin_retriever_with_langchain_agent.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
 
 ## Contributing
