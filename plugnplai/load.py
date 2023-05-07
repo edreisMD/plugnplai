@@ -6,9 +6,7 @@ import requests
 import yaml
 
 
-def get_plugins(
-    filter: str = None, provider: str = "plugnplai"
-):
+def get_plugins(filter: str = None, provider: str = "plugnplai"):
     if provider == "plugnplai":
         base_url = "https://www.plugnplai.com/_functions/getUrls"
         # Construct the endpoint URL based on the filter argument
@@ -29,11 +27,12 @@ def get_plugins(
         url = "https://plugin.so/api/plugins/list"
         response = requests.get(url)
         if response.status_code == 200:
-                # Parse the JSON response and return the result
+            # Parse the JSON response and return the result
             return [f"https://{entry['domain']}" for entry in response.json()]
         else:
             # Handle unsuccessful responses
             return f"An error occurred: {response.status_code} {response.reason}"
+
 
 # given a plugin url, get the ai-plugin.json manifest, in "/.well-known/ai-plugin.json"
 def get_plugin_manifest(url: str):
