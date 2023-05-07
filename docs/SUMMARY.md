@@ -1,11 +1,16 @@
 # Table of contents
 
-* [examples](README.md)
-  * [Get list of plugins](examples/get-list-of-plugins.md)
-* [get-started](get-started/README.md)
-  * [Quickstart](get-started/quickstart.md)
-* [modules](modules/README.md)
-  * [Utility Functions](modules/utility-functions.md)
+## Get Started
+
+* [Quickstart](get-started/quickstart.md)
+
+## Modules
+
+* [Utility Functions](modules/utility-functions.md)
+
+## Examples
+
+* [Get list of plugins](examples/get-list-of-plugins.md)
 
 ## Group 1
 
