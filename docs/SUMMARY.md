@@ -1,5 +1,7 @@
 # Table of contents
 
+* [Overview](README.md)
+
 ## Get Started
 
 * [Quickstart](get-started/quickstart.md)
