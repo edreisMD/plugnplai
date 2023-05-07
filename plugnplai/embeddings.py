@@ -1,7 +1,7 @@
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.schema import Document
 from langchain.vectorstores import FAISS
-
+from plugnplai.load import get_plugin_manifest, get_plugins
 
 class PluginRetriever:
     def __init__(self, manifests: list, returnList: list = None):
@@ -37,6 +37,23 @@ class PluginRetriever:
         # Create a retriever
         self.retriever = self.vector_store.as_retriever()
 
+    @classmethod
+    def from_urls(self, urls: list):
+        """
+        urls: list of urls
+        """
+        manifests = [get_plugin_manifest(url) for url in urls]
+        return self(manifests, urls)
+
+    @classmethod
+    def from_directory(self, provider: str = "plugnplai"):
+        """
+        website: website url
+        """
+        urls = get_plugins(provider = provider)
+        manifests = [get_plugin_manifest(url) for url in urls]
+        return self(manifests)
+        
     def retrieve_names(self, query):
         # Get relevant documents based on query
         docs = self.retriever.get_relevant_documents(query)
