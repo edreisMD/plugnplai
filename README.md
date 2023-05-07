@@ -24,7 +24,9 @@ The following utility functions are available in the library:
 - `get_openapi_spec(openapi_url)`: Get the OpenAPI specification from the specified OpenAPI URL.
 - `spec_from_url(url)`: Returns the Manifest and OpenAPI specification from the plugin URL.
 
-### Example
+### Examples
+
+#### Utility functions
 
 Here is an example of how to use the utility functions:
 
@@ -45,9 +47,37 @@ urls = plugnplai.get_plugins(filter = 'working')
 manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```
 
+#### Plugins Retrieval
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/docs/examples/plugin_retriever_with_langchain_agent.ipynb)
+
+
 ## Contributing
 
 Plug and Plai is an open source library, and we welcome contributions from the entire community. If you're interested in contributing to the project, please feel free to fork, submit pull requests, report issues, or suggest new features.
+
+#### To dos
+- [ ] Define a default object to read plugins - use LangChain standard? (for now using only manifest and specs jsons)
+- [ ] [Load] Fix breaking on reading certain plugins specs
+- [ ] [Load] Accept different specs methods and versions (param, query, body)
+- [ ] [Prompt] Build a utility function to return a default prompts for a plugin
+- [ ] [Prompt] Fix prompt building for body (e.g. "Speak") 
+- [ ] [Prompt] Build a utility function to return a default prompts for a set of plugins
+- [ ] [Prompt] Build a utility function to count tokens of the plugins prompt
+- [ ] [Prompt] Use the prompt tokens number to short or expand a plugin prompt
+- [ ] [Embeddings] Add filter option (e.g. "working", "ChatGPT") to "PluginRetriever.from_directory()"
+- [ ] [Docs] Add Sphynx docs
+- [ ] [Verification] Build automated tests to verify new plugins
+- [ ] [Verification] Build automated monitoring for working plugins
+- [ ] [Website] Build an open-source website
+
+#### Project Roadmap
+1. Build auxiliary functions that helps everyone to use plugins as defined by [OpenAI](https://platform.openai.com/docs/plugins/introduction)
+2. Build in compatibility with different open-source formats (e.g. LangChain, BabyAGI, etc)
+3. Find a best prompt format for plugins, optimizing for token number and description completness
+4. Build a dataset to finetune open-source models to call plugins
+5. Finetune an open-source model to call plugins
+6. Help with authentication
+7. Etc.
 
 ## Links
 
