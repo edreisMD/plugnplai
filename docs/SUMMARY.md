@@ -8,6 +8,8 @@
 ## Examples
 
 * [Get list of plugins](examples/get-list-of-plugins.md)
+* [Get list of plugins](docs/examples/plugin_retriever_with_langchain_agent.ipynb)
+* [Get list of plugins](examples/plugin_retriever_with_langchain_agent_clean_version.ipynb)
 
 ## Modules
 
