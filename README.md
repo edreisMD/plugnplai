@@ -48,7 +48,7 @@ manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```
 
 #### Plugins Retrieval
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/docs/examples/plugin_retriever_with_langchain_agent.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
 
 ## Contributing
@@ -56,7 +56,7 @@ manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 Plug and Plai is an open source library, and we welcome contributions from the entire community. If you're interested in contributing to the project, please feel free to fork, submit pull requests, report issues, or suggest new features.
 
 #### To dos
-- [ ] Define a default object to read plugins - use LangChain standard? (for now using only manifest and specs jsons)
+- [ ] [Load] Define a default object to read plugins - use LangChain standard? (for now using only manifest and specs jsons)
 - [ ] [Load] Fix breaking on reading certain plugins specs
 - [ ] [Load] Accept different specs methods and versions (param, query, body)
 - [ ] [Prompt] Build a utility function to return a default prompts for a plugin
