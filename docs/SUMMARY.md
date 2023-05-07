@@ -12,4 +12,9 @@
 ## Examples
 
 * [Get list of plugins](examples/get-list-of-plugins.md)
-* [Plugins Retrieval](examples/plugin_retriever_with_langchain_agent.ipynb)
+* [Plugins Retrieval](examples/plugins-retrieval.md)
+* [Page 1](examples/page-1.md)
+
+## API
+
+* [API reference](api/api-reference.md)
