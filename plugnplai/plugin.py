@@ -99,7 +99,6 @@ def build_prompt_description(pluginJson, open_api_spec) -> str:
 
 
 class Plugin(BaseModel):
-
     name: str
     url: str
     description_for_model: str
@@ -165,7 +164,6 @@ def build_prompt_prefix(plugins) -> str:
 
 
 class InstallPlugins(BaseModel):
-
     Plugins: list
     Prompt: str
 

@@ -7,6 +7,7 @@ from plugnplai.load import (
     spec_from_url,
 )
 from plugnplai.plugin import InstallPlugins, Plugin, PluginJson
+from plugnplai.embeddings import PluginRetriever
 
 __all__ = [
     "CallApi",
@@ -19,4 +20,5 @@ __all__ = [
     "get_openapi_url",
     "get_openapi_spec",
     "spec_from_url",
+    "PluginRetriever"
 ]
