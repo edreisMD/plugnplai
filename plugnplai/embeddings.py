@@ -50,7 +50,7 @@ class PluginRetriever:
         """
         website: website url
         """
-        urls = get_plugins(provider = provider)
+        urls = get_plugins(filter = "working", provider = provider)
         manifests = [get_plugin_manifest(url) for url in urls]
         return self(manifests)
         
