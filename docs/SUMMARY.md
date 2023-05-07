@@ -1,9 +1,8 @@
 # Table of contents
 
-* [Overview](README.md)
-
 ## Get Started
 
+* [Overview](README.md)
 * [Quickstart](get-started/quickstart.md)
 
 ## Modules
