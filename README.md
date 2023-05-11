@@ -59,7 +59,7 @@ manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 
 ### Create Prompt with Plugins Description
 
-*Example notebook:* [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/create_prompt_plugins.ipynb)
+**Example notebook:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/create_prompt_plugins.ipynb)
 
 ```python
 from plugnplai import Plugins
@@ -112,8 +112,7 @@ print(plugins.tokens)
 
 ### Plugins Retrieval
 
-Example notebook with LangChain agent:
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
+**Example notebook with LangChain agent:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
 ```python
 from plugnplai import PluginRetriever
