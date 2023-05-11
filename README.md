@@ -65,7 +65,13 @@ manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```python
 from plugnplai import Plugins
 
-# Initialize 'Plugins' by passing a list of urls, this function will load the plugins and build a default description to be used as prefix prompt
+###### ACTIVATE A MAX OF 3 PLUGINS ######
+# Context length limits the number of plugins you can activate, 
+# you need to make sure the prompt fits in your context lenght, 
+# still leaving space for the user message
+
+# Initialize 'Plugins' by passing a list of urls, this function will 
+# load the plugins and build a default description to be used as prefix prompt
 plugins = Plugins.install_and_activate(urls)
 
 #  Print the deafult prompt for the activated plugins
@@ -74,8 +80,7 @@ print(plugins.prompt)
 #  Print the number of tokens of the prefix prompt
 print(plugins.tokens)
 
-###### ACTIVATE A MAX OF 3 PLUGINS ######
-# Context length might limiti the number of plugins you can activate, you need to make sure the prompt fits in your context lenght, leaving space for the user message
+
 ```
 
 Example on installing (loading) all plugins, and activating a few later:
@@ -83,7 +88,8 @@ Example on installing (loading) all plugins, and activating a few later:
 ```python
 from plugnplai import Plugins
 
-#If you just want to load the plugins, but activate only some of them later use Plugins(urls) instead
+# If you just want to load the plugins, but activate only 
+# some of them later use Plugins(urls) instead
 plugins = Plugins(urls)
 
 # Print the names of installed plugins
@@ -113,7 +119,8 @@ Example notebook with LangChain agent:
 ```python
 from plugnplai import PluginRetriever
 
-# Initialize the plugins retriever vector database and index the plugins descriptions. Loading the plugins from plugnplai.com directory
+# Initialize the plugins retriever vector database and index the plugins descriptions. 
+# Loading the plugins from plugnplai.com directory
 plugin_retriever = PluginRetriever.from_directory()
 
 #  Retrieve the names of the plugins given a user's message

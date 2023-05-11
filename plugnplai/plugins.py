@@ -2,7 +2,7 @@ import requests
 from typing import Any, Dict, Optional, List
 from urllib.parse import urljoin
 import tiktoken
-from plugnplai.load import spec_from_url
+from plugnplai.utils import spec_from_url
 from plugnplai.prompt_templates import *
 
 
