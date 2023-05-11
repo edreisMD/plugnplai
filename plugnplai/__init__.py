@@ -6,7 +6,6 @@ from plugnplai.utils import (
     spec_from_url,
     get_category_names
 )
-from plugnplai.plugins import InstallPlugins, Plugin, PluginJson
 from plugnplai.embeddings import PluginRetriever
 from plugnplai.plugins import PluginObject, Plugins
 
