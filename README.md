@@ -50,9 +50,6 @@ Help to load the plugins manifest and OpenAPI specification
 - `manifest, spec = spec_from_url(url)`: Returns the Manifest and OpenAPI specification from the plugin URL.
 
 #### Example
-
-Here is an example of how to use the utility functions:
-
 ```python
 import plugnplai
 
@@ -81,7 +78,7 @@ print(plugins.tokens)
 # Context length might limiti the number of plugins you can activate, you need to make sure the prompt fits in your context lenght, leaving space for the user message
 ```
 
-Install all, and activate a few later:
+Example on installing (loading) all plugins, and activating a few later:
 
 ```python
 from plugnplai import Plugins
