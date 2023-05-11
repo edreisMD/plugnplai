@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "plugnplai"
-version = "0.0.9"
+version = "0.0.10"
 description = "Connect plugins to AI"
 authors = []
 license = "MIT"

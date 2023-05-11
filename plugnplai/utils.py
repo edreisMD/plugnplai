@@ -71,7 +71,6 @@ def get_plugin_manifest(url: str):
     response = make_request_get(urlJson)
     return response.json()
 
-
 # load the OpenAPI specification for the plugin, given the OpenAPI url described in the manifest file
 def get_openapi_url(url, manifest):
     openapi_url = manifest["api"]["url"]
