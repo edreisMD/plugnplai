@@ -21,9 +21,6 @@ pip install plugnplai
 - `urls = get_plugins(filter = 'ChatGPT', category='dev')`: Use 'filter' or 'category' variables to query specific plugins 
 
 #### Example
-
-Here is an example of how to use the utility functions:
-
 ```python
 import plugnplai
 
