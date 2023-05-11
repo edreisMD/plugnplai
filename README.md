@@ -111,7 +111,7 @@ print(plugins.prompt)
 print(plugins.tokens)
 ```
 
-#### Plugins Retrieval
+### Plugins Retrieval
 
 Example notebook with LangChain agent:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
