@@ -63,7 +63,11 @@ import plugnplai
 manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```
 
-### Create Prefix Prompt with Plugins Description
+### Create Prompt with Plugins Description
+
+#### Example notebook
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
+
 ```python
 from plugnplai import Plugins
 
@@ -80,9 +84,7 @@ print(plugins.tokens)
 # Context length might limiti the number of plugins you can activate, you need to make sure the prompt fits in your context lenght, leaving space for the user message
 ```
 
-#### Example notebook
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
-
+Install all, and activate a few later:
 
 ```python
 from plugnplai import Plugins
@@ -111,6 +113,9 @@ print(plugins.tokens)
 
 #### Plugins Retrieval
 
+Example notebook with LangChain agent:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
+
 ```python
 from plugnplai import PluginRetriever
 
@@ -120,10 +125,6 @@ plugin_retriever = PluginRetriever.from_directory()
 #  Retrieve the names of the plugins given a user's message
 plugin_retriever.retrieve_names("what shirts can i buy?")
 ```
-
-Example notebook with LangChain agent:
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
-
 
 ## Contributing
 
