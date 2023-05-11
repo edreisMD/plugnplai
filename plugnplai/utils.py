@@ -5,17 +5,33 @@ import jsonref
 import requests
 import yaml
 
+def make_request_get(url: str, timeout=5):
+    try:
+        response = requests.get(url, timeout=timeout)
+        response.raise_for_status()  # Raises stored HTTPError, if one occurred.
+    except requests.exceptions.HTTPError as errh:
+        print ("Http Error:",errh)
+    except requests.exceptions.ConnectionError as errc:
+        print ("Error Connecting:",errc)
+    except requests.exceptions.Timeout as errt:
+        print ("Timeout Error:",errt)
+    except requests.exceptions.RequestException as err:
+        print ("Something went wrong",err)
+        return None
+    return response
 
-def get_plugins(filter: str = None, provider: str = "plugnplai"):
+def get_plugins(filter: str = None, category: str = None, provider: str = "plugnplai"):
     if provider == "plugnplai":
-        base_url = "https://www.plugnplai.com/_functions/getUrls"
-        # Construct the endpoint URL based on the filter argument
+        base_url = "https://www.plugnplai.com/_functions"
+        # Construct the endpoint URL based on the filter and category arguments
         if filter in ["working", "ChatGPT"]:
-            url = f'{base_url.strip("/")}/{filter}'
+            url = f'{base_url.strip("/")}/getUrls/{filter}'
+        elif category is not None:
+            url = f'{base_url.strip("/")}/getCategoryUrls/{category}'
         else:
-            url = base_url
+            url = f'{base_url.strip("/")}/getUrls'
         # Make the HTTP GET request
-        response = requests.get(url)
+        response = make_request_get(url)
         # Check if the response status code is successful (200 OK)
         if response.status_code == 200:
             # Parse the JSON response and return the result
@@ -33,12 +49,27 @@ def get_plugins(filter: str = None, provider: str = "plugnplai"):
             # Handle unsuccessful responses
             return f"An error occurred: {response.status_code} {response.reason}"
 
+def get_category_names(provider: str = "plugnplai"):
+    if provider == "plugnplai":
+        base_url = "https://www.plugnplai.com/_functions"
+        url = f'{base_url.strip("/")}/categoryNames'
+        # Make the HTTP GET request
+        response = requests.get(url)
+        # Check if the response status code is successful (200 OK)
+        if response.status_code == 200:
+            # Parse the JSON response and return the result
+            return response.json()
+        else:
+            # Handle unsuccessful responses
+            return f"An error occurred: {response.status_code} {response.reason}"
+    else:
+        return "Provider not supported for this operation."
 
 # given a plugin url, get the ai-plugin.json manifest, in "/.well-known/ai-plugin.json"
 def get_plugin_manifest(url: str):
     urlJson = os.path.join(url, ".well-known/ai-plugin.json")
-    response = requests.get(urlJson).json()
-    return response
+    response = make_request_get(urlJson)
+    return response.json()
 
 
 # load the OpenAPI specification for the plugin, given the OpenAPI url described in the manifest file

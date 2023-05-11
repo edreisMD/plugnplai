@@ -1,7 +1,7 @@
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.schema import Document
 from langchain.vectorstores import FAISS
-from plugnplai.load import get_plugin_manifest, get_plugins
+from plugnplai.utils import get_plugin_manifest, get_plugins
 
 class PluginRetriever:
     def __init__(self, manifests: list, returnList: list = None):
