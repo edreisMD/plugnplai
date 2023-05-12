@@ -36,4 +36,4 @@ After requesting the API, refrain from writing anything else and wait for the AP
 
 {{plugins}}
 # USER MESSAGE
-'''.replace('DATE_TODAY', today_date)
+'''.replace('DATE_TODAY', str(today_date))
