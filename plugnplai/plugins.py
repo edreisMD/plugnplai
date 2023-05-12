@@ -248,6 +248,6 @@ class Plugins:
             return None
 
         # Call the operation
-        response = openapi_object.call_operation(operation_details, parameters)
+        response = openapi_object.call_operation(operation_id, parameters)
 
         return response

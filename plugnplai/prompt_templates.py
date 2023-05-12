@@ -1,8 +1,13 @@
+from datetime import datetime
+today_date = datetime.today().date()
+
 # Template to be filled with the plugins description, 
 # this template muste have a {{plugins}} variable
 template_gpt4 = '''
 # SYSTEM MESSAGE
 You are a large language model trained to assist humans.
+Knowledge Cutoff: 2021-09
+Current date: DATE_TODAY
 Below is a list of available APIs that you can utilize to fulfill user requests. 
 When using an API, please follow the specified format to make the API call. 
 If possible, avoid asking follow-up questions and aim to complete the task with the information provided by the user.
@@ -31,5 +36,4 @@ After requesting the API, refrain from writing anything else and wait for the AP
 
 {{plugins}}
 # USER MESSAGE
-
-'''
+'''.replace('DATE_TODAY', str(today_date))
