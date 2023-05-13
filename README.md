@@ -12,16 +12,13 @@ You can install Plug and PlAI using pip:
 pip install plugnplai
 ```
 
-
-# Examples
+## Quick Start with Examples
 
 **Load and Call Plugins:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
-
 
 **Generate Prompt with Plugins Description:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/create_prompt_plugins.ipynb)
 
 **Plugins Retrieval:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
-
 
 
 ## Usage
@@ -72,6 +69,7 @@ manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```
 
 ### Load Plugins
+**Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
 
 ```python
 from plugnplai import Plugins
@@ -121,6 +119,8 @@ print(plugins.tokens)
 ```
 
 ### Plugins Retrieval
+**Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
+
 
 ```python
 from plugnplai import PluginRetriever
