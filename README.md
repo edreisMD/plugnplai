@@ -12,6 +12,15 @@ You can install Plug and PlAI using pip:
 pip install plugnplai
 ```
 
+## Quick Start with Examples
+
+**Load and Call Plugins:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
+
+**Generate Prompt with Plugins Description:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/create_prompt_plugins.ipynb)
+
+**Plugins Retrieval:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
+
+
 ## Usage
 
 ### Get a list of plugins
@@ -20,7 +29,8 @@ pip install plugnplai
 
 - `urls = get_plugins(filter = 'ChatGPT', category='dev')`: Use 'filter' or 'category' variables to query specific plugins 
 
-#### Example
+Example: 
+
 ```python
 import plugnplai
 
@@ -49,7 +59,8 @@ Help to load the plugins manifest and OpenAPI specification
 - `spec = get_openapi_spec(openapi_url)`: Get the OpenAPI specification from the specified OpenAPI URL.
 - `manifest, spec = spec_from_url(url)`: Returns the Manifest and OpenAPI specification from the plugin URL.
 
-#### Example
+Example: 
+
 ```python
 import plugnplai
 
@@ -57,9 +68,8 @@ import plugnplai
 manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```
 
-### Create Prompt with Plugins Description
-
-**Example notebook:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/create_prompt_plugins.ipynb)
+### Load Plugins
+**Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
 
 ```python
 from plugnplai import Plugins
@@ -78,8 +88,6 @@ print(plugins.prompt)
 
 #  Print the number of tokens of the prefix prompt
 print(plugins.tokens)
-
-
 ```
 
 Example on installing (loading) all plugins, and activating a few later:
@@ -111,8 +119,8 @@ print(plugins.tokens)
 ```
 
 ### Plugins Retrieval
+**Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
-**Example notebook with LangChain agent:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
 ```python
 from plugnplai import PluginRetriever
@@ -124,6 +132,7 @@ plugin_retriever = PluginRetriever.from_directory()
 #  Retrieve the names of the plugins given a user's message
 plugin_retriever.retrieve_names("what shirts can i buy?")
 ```
+
 
 ## Contributing
 
@@ -139,7 +148,7 @@ Plug and Plai is an open source library, and we welcome contributions from the e
 - [x] [Prompt] Build a utility function to count tokens of the plugins prompt
 - [ ] [Prompt] Use the prompt tokens number to short or expand a plugin prompt, use LLM to summarize the prefix prompt
 - [x] [CallAPI] Build a function to call API given a dictionary of parameters
-- [ ] [CallAPI] Add example for calling API
+- [x] [CallAPI] Add example for calling API
 - [ ] [Embeddings] Add filter option (e.g. "working", "ChatGPT") to "PluginRetriever.from_directory()"
 - [ ] [Docs] Add Sphynx docs
 - [ ] [Verification] Build automated tests to verify new plugins
