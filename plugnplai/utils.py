@@ -204,3 +204,24 @@ def parse_llm_response(response: str) -> dict:
         'operation_id': api.split('.')[1],
         'parameters': params
     }
+
+def parse_llm_response(response: str) -> dict:
+    pattern = r'<API>\s*(.*?)\s*\((.*?)\)\s*</API>'
+    match = re.search(pattern, response, re.DOTALL)
+
+    if not match:
+        return {}
+
+    api = match.group(1)
+    params_str = match.group(2)
+
+    try:
+        params = json.loads(params_str)
+    except json.JSONDecodeError:
+        params = {}
+
+    return {
+        'plugin_name': api.split('.')[0],
+        'operation_id': api.split('.')[1],
+        'parameters': params
+    }
