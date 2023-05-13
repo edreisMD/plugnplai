@@ -1,6 +1,5 @@
 import requests
 from typing import Any, Dict, Optional, List
-from urllib.parse import urljoin
 import tiktoken
 from plugnplai.utils import spec_from_url
 from plugnplai.prompt_templates import *
@@ -10,6 +9,23 @@ def count_tokens(text: str, model_name: str = "gpt-4") -> int:
     encoding = tiktoken.encoding_for_model(model_name)
     num_tokens = len(encoding.encode(text))
     return num_tokens
+
+def build_request_body(schema: Dict[str, Any], parameters: Dict[str, Any]) -> Any:
+  if schema.get('type') == 'object':
+      properties = schema.get('properties', {})
+      required = schema.get('required', [])
+
+      body = {}
+      for param_name, param_schema in properties.items():
+          if param_name in parameters:
+              body[param_name] = parameters[param_name]
+          elif param_name in required:
+              print(f'Required parameter {param_name} is missing')
+              return None
+
+      return body
+
+  return None
 
 class PluginObject():
     def __init__(self, spec: Dict[str, Any], manifest: Dict[str, Any]):
@@ -40,12 +56,12 @@ class PluginObject():
                 current_operation_id = operation.get('operationId')
                 if current_operation_id:
                     # Build the URL
-                    url = urljoin(base_url, path)
+                    url_op = f"{base_url.rstrip('/')}/{path.lstrip('/')}"
 
                     # Store operation details
                     operation_details = {
                         'method': method,
-                        'url': url,
+                        'url': url_op,
                         'parameters': [],
                         'requestBody': None,
                     }
@@ -98,7 +114,8 @@ class PluginObject():
                 cookie_parameters[parameter['name']] = parameters.get(parameter['name'])
 
         if operation_details['requestBody']:
-            body = parameters.get('body')
+            body_schema = operation_details['requestBody']['content']['application/json']['schema']
+            body = build_request_body(body_schema, parameters)
 
         # Replace path parameters in the URL
         url = operation_details['url']
@@ -110,8 +127,8 @@ class PluginObject():
         if method.lower() == 'get':
             response = requests.get(url, params=query_parameters, headers=header_parameters, cookies=cookie_parameters)
         elif method.lower() == 'post':
-            response = requests.post(url, params=query_parameters, headers=header_parameters, cookies=cookie_parameters, json=body)
-        # Add other methods as needed
+            headers = {'Content-Type': 'application/json'}
+            response = requests.post(url, params=query_parameters, headers=headers, cookies=cookie_parameters, json=body)
 
         return response
 

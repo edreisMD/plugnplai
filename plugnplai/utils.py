@@ -4,6 +4,7 @@ import os
 import jsonref
 import requests
 import yaml
+import re
 
 def make_request_get(url: str, timeout=5):
     try:
@@ -181,3 +182,25 @@ def extract_all_parameters(openapi_spec):
             }
 
     return all_parameters
+
+
+def parse_llm_response(response: str) -> dict:
+    pattern = r'\[API\](.*?)\[/API\]\s*\[PARAMS\](.*?)\[/PARAMS\]'
+    match = re.search(pattern, response, re.DOTALL)
+
+    if not match:
+        return {}
+
+    api = match.group(1)
+    params_str = match.group(2)
+
+    try:
+        params = json.loads(params_str)
+    except json.JSONDecodeError:
+        params = {}
+
+    return {
+        'plugin_name': api.split('.')[0],
+        'operation_id': api.split('.')[1],
+        'parameters': params
+    }
