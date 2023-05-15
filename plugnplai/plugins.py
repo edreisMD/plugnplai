@@ -1,7 +1,7 @@
 import requests
-from typing import Any, Dict, Optional, List
+from typing import Any, Dict, Optional, List, Callable
 import tiktoken
-from plugnplai.utils import spec_from_url
+from plugnplai.utils import spec_from_url, parse_llm_response
 from plugnplai.prompt_templates import *
 
 
@@ -183,6 +183,23 @@ class PluginObject():
 
         return api_description
     
+
+
+
+api_return_template = f"""
+Assistant is a large language model with access to plugins.
+
+Assistant called a plugin in response to this human message:
+# HUMAN MESSAGE
+{HUMAN_MESSAGE}
+
+# API REQUEST SUMMARY
+{llm_first_response}
+
+# API RESPONSE
+{api_response}
+"""
+
 class Plugins:
     def __init__(self, urls: List[str], template: str = template_gpt4):
         self.installed_plugins = {}
@@ -268,3 +285,42 @@ class Plugins:
         response = openapi_object.call_operation(operation_id, parameters)
 
         return response
+
+    def apply_plugins(self, llm_function: Callable[..., str]) -> Callable[..., str]:
+        def decorator(user_message: str, *args: Any, **kwargs: Any) -> str:
+            # Step 1: Add self.prompt as a prefix of the user's message
+            message_with_prompt = f"{self.prompt}\n{user_message}"
+
+            # Step 2: Call the passed LLM function with the updated message and additional arguments
+            llm_response = llm_function(message_with_prompt, *args, **kwargs)
+
+            # Step 3: Check if the response contains '<API>'
+            if '<API>' in llm_response:
+                # Step 4: Parse the LLM response to get API information
+                api_info = parse_llm_response(llm_response)
+
+                if api_info:
+                    # Step 5: Call the API using self.call_api
+                    plugin_name = api_info['plugin_name']
+                    operation_id = api_info['operation_id']
+                    parameters = api_info['parameters']
+
+                    print(f"Calling {plugin_name}")
+
+                    api_response = self.call_api(plugin_name, operation_id, parameters)
+
+                    if api_response is not None:
+                        # Step 7: Build a new call to the passed LLM function with API response summary
+                        llm_summary = api_return_template.format(
+                            user_message=user_message,
+                            api_info=api_info,
+                            api_response=api_response.text
+                        )
+
+                        # Step 8: Return the updated response
+                        return llm_function(llm_summary, *args, **kwargs)
+
+            # Return the original LLM response if no API calls were made
+            return llm_response
+
+        return decorator
