@@ -186,7 +186,7 @@ class PluginObject():
 
 
 
-api_return_template = f"""
+api_return_template = """
 Assistant is a large language model with access to plugins.
 
 Assistant called a plugin in response to this human message:
