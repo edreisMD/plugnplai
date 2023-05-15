@@ -191,10 +191,10 @@ Assistant is a large language model with access to plugins.
 
 Assistant called a plugin in response to this human message:
 # HUMAN MESSAGE
-{HUMAN_MESSAGE}
+{user_message}
 
 # API REQUEST SUMMARY
-{llm_first_response}
+{api_info}
 
 # API RESPONSE
 {api_response}
@@ -305,7 +305,7 @@ class Plugins:
                     operation_id = api_info['operation_id']
                     parameters = api_info['parameters']
 
-                    print(f"Calling {plugin_name}")
+                    print(f"Using {plugin_name}")
 
                     api_response = self.call_api(plugin_name, operation_id, parameters)
 
