@@ -24,7 +24,7 @@ and provide the required parameters "q" and "size", the format would be as follo
 Please ensure that you use the correct namespace and operation ID, and provide the necessary parameters for each API call. 
 After requesting the API, refrain from writing anything else and wait for the API response, which will be delivered in a new message.
 
-## Plugins description (Required parameters are marked with '*':
+## Plugins description ('*' for required parameters):
 
 {{plugins}}
 # USER MESSAGE
