@@ -12,9 +12,14 @@ You can install Plug and PlAI using pip:
 pip install plugnplai
 ```
 
-## Quick Start with Examples
+## Quick Start Example
 
-**Load and Call Plugins:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
+**Apply Plugins in Three Steps:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/apply_plugins_three_steps.ipynb)
+
+
+## More Examples
+
+**Load and Call Step by Step:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
 
 **Generate Prompt with Plugins Description:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/create_prompt_plugins.ipynb)
 
