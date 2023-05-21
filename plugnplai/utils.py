@@ -1,4 +1,5 @@
 import json
+import ast
 import os
 
 import jsonref
@@ -194,9 +195,14 @@ def parse_llm_response(response: str) -> dict:
     params_str = match.group(2)
 
     try:
+        # Try parsing as JSON first
         params = json.loads(params_str)
     except json.JSONDecodeError:
-        params = {}
+        try:
+            # If that fails, try parsing as a Python literal expression
+            params = ast.literal_eval(params_str)
+        except (ValueError, SyntaxError):
+            params = {}
 
     return {
         'plugin_name': api.split('.')[0],
