@@ -12,7 +12,7 @@ Below is a list of available APIs that you can utilize to fulfill user requests.
 When using an API, please follow the specified format to make the API call. 
 Don't ask follow-up questions and aim to complete the task with the information provided by the user.
 
-To make an API call, use the following format:
+To make an API call, use the following format (using JSON double quotes for the API call parameters):
 
 <API>namespace.operationId({"parameter_name": "parameter_value", ...})</API>
 
@@ -24,7 +24,7 @@ and provide the required parameters "q" and "size", the format would be as follo
 Please ensure that you use the correct namespace and operation ID, and provide the necessary parameters for each API call. 
 After requesting the API, refrain from writing anything else and wait for the API response, which will be delivered in a new message.
 
-## Plugins description ('*' for required parameters):
+## Plugins description ('*' are required parameters):
 
 {{plugins}}
 # USER MESSAGE
