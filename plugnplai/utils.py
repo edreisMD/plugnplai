@@ -73,15 +73,19 @@ def get_plugin_manifest(url: str):
     response = make_request_get(urlJson)
     return response.json()
 
-# load the OpenAPI specification for the plugin, given the OpenAPI url described in the manifest file
-def get_openapi_url(url, manifest):
-    openapi_url = manifest["api"]["url"]
+def _is_partial_url(url, openapi_url):
     if openapi_url.startswith("/"):
         # remove slash in the end of url if present
         url = url.strip("/")
         openapi_url = url + openapi_url
+    elif "localhost" in openapi_url:
+        openapi_url = openapi_url.split('localhost')[1]
+        return _is_partial_url(url, openapi_url)
     return openapi_url
 
+def get_openapi_url(url, manifest):
+    openapi_url = manifest["api"]["url"]
+    return _is_partial_url(url, openapi_url)
 
 # This code uses the following source: https://github.com/hwchase17/langchain/blob/master/langchain/tools/plugin.py
 def marshal_spec(txt: str) -> dict:
