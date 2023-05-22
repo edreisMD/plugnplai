@@ -43,7 +43,7 @@ def get_plugins(filter: str = None, category: str = None, provider: str = "plugn
             return f"An error occurred: {response.status_code} {response.reason}"
     elif provider == "pluginso":
         url = "https://plugin.so/api/plugins/list"
-        response = requests.get(url)
+        response = make_request_get(url)
         if response.status_code == 200:
             # Parse the JSON response and return the result
             return [f"https://{entry['domain']}" for entry in response.json()]
@@ -56,7 +56,7 @@ def get_category_names(provider: str = "plugnplai"):
         base_url = "https://www.plugnplai.com/_functions"
         url = f'{base_url.strip("/")}/categoryNames'
         # Make the HTTP GET request
-        response = requests.get(url)
+        response = make_request_get(url)
         # Check if the response status code is successful (200 OK)
         if response.status_code == 200:
             # Parse the JSON response and return the result
@@ -73,15 +73,19 @@ def get_plugin_manifest(url: str):
     response = make_request_get(urlJson)
     return response.json()
 
-# load the OpenAPI specification for the plugin, given the OpenAPI url described in the manifest file
-def get_openapi_url(url, manifest):
-    openapi_url = manifest["api"]["url"]
+def _is_partial_url(url, openapi_url):
     if openapi_url.startswith("/"):
         # remove slash in the end of url if present
         url = url.strip("/")
         openapi_url = url + openapi_url
+    elif "localhost" in openapi_url:
+        openapi_url = openapi_url.split('localhost')[1]
+        return _is_partial_url(url, openapi_url)
     return openapi_url
 
+def get_openapi_url(url, manifest):
+    openapi_url = manifest["api"]["url"]
+    return _is_partial_url(url, openapi_url)
 
 # This code uses the following source: https://github.com/hwchase17/langchain/blob/master/langchain/tools/plugin.py
 def marshal_spec(txt: str) -> dict:
@@ -93,7 +97,7 @@ def marshal_spec(txt: str) -> dict:
 
 
 def get_openapi_spec(openapi_url):
-    openapi_spec_str = requests.get(openapi_url).text
+    openapi_spec_str = make_request_get(openapi_url).text
     openapi_spec = marshal_spec(openapi_spec_str)
     # Use jsonref to resolve references
     resolved_openapi_spec = jsonref.JsonRef.replace_refs(openapi_spec)
