@@ -43,7 +43,7 @@ def get_plugins(filter: str = None, category: str = None, provider: str = "plugn
             return f"An error occurred: {response.status_code} {response.reason}"
     elif provider == "pluginso":
         url = "https://plugin.so/api/plugins/list"
-        response = requests.get(url)
+        response = make_request_get(url)
         if response.status_code == 200:
             # Parse the JSON response and return the result
             return [f"https://{entry['domain']}" for entry in response.json()]
@@ -56,7 +56,7 @@ def get_category_names(provider: str = "plugnplai"):
         base_url = "https://www.plugnplai.com/_functions"
         url = f'{base_url.strip("/")}/categoryNames'
         # Make the HTTP GET request
-        response = requests.get(url)
+        response = make_request_get(url)
         # Check if the response status code is successful (200 OK)
         if response.status_code == 200:
             # Parse the JSON response and return the result
@@ -97,7 +97,7 @@ def marshal_spec(txt: str) -> dict:
 
 
 def get_openapi_spec(openapi_url):
-    openapi_spec_str = requests.get(openapi_url).text
+    openapi_spec_str = make_request_get(openapi_url).text
     openapi_spec = marshal_spec(openapi_spec_str)
     # Use jsonref to resolve references
     resolved_openapi_spec = jsonref.JsonRef.replace_refs(openapi_spec)
