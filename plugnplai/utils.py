@@ -79,7 +79,7 @@ def _is_partial_url(url, openapi_url):
         url = url.strip("/")
         openapi_url = url + openapi_url
     elif "localhost" in openapi_url:
-        openapi_url = openapi_url.split('localhost')[1]
+        openapi_url = "/"+openapi_url.split("/")[-1]
         return _is_partial_url(url, openapi_url)
     return openapi_url
 
