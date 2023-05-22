@@ -28,13 +28,13 @@ def build_request_body(schema: Dict[str, Any], parameters: Dict[str, Any]) -> An
   return None
 
 class PluginObject():
-    def __init__(self, spec: Dict[str, Any], manifest: Dict[str, Any]):
+    def __init__(self, url: str, spec: Dict[str, Any], manifest: Dict[str, Any]):
         self.openapi = spec.get('openapi')
         self.info = spec.get('info')
         self.paths = spec.get('paths')
         self.servers = spec.get('servers')
         self.manifest = manifest
-        self.openapi_url = manifest.get('openapi_url', None)
+        self.url = url
         self.name_for_model = manifest.get('name_for_model', None)
         self.description_for_model = manifest.get('description_for_model', None)
         self.operation_details_dict = self.get_operation_details()
@@ -46,8 +46,8 @@ class PluginObject():
     def get_operation_details(self) -> Dict[str, Any]:
         operation_details_dict = {}
 
-        # Use openapi_url as a fallback if servers is not provided
-        base_url = self.servers[0]['url'] if self.servers else self.openapi_url
+        # Use url as a fallback if servers is not provided
+        base_url = self.servers[0]['url'] if self.servers else self.url
 
         # Iterate over all paths
         for path, path_item in self.paths.items():
@@ -226,7 +226,7 @@ class Plugins:
     def install_plugins(self, urls: List[str]):
         for url in urls:
             manifest, openapi_spec = spec_from_url(url)
-            openapi_object = PluginObject(openapi_spec, manifest)
+            openapi_object = PluginObject(url, openapi_spec, manifest)
             self.installed_plugins[openapi_object.name_for_model] = openapi_object
 
     def activate(self, plugin_name: str):
