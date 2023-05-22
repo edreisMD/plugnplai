@@ -97,7 +97,7 @@ def marshal_spec(txt: str) -> dict:
 
 
 def get_openapi_spec(openapi_url):
-    openapi_spec_str = make_request_get(openapi_url).text
+    openapi_spec_str = make_request_get(openapi_url, timeout=20).text
     openapi_spec = marshal_spec(openapi_spec_str)
     # Use jsonref to resolve references
     resolved_openapi_spec = jsonref.JsonRef.replace_refs(openapi_spec)
