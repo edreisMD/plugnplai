@@ -1,5 +1,5 @@
 import requests
-from typing import Any, Dict, Optional, List, Callable
+from typing import Any, Dict, Optional, List, Callable, Union
 import tiktoken
 from plugnplai.utils import spec_from_url, parse_llm_response
 from plugnplai.prompt_templates import *
@@ -211,7 +211,10 @@ class Plugins:
         self.install_plugins(urls)
 
     @classmethod
-    def install_and_activate(cls, urls: List[str], template: str = template_gpt4):
+    def install_and_activate(cls, urls: Union[str, List[str]], template: str = template_gpt4):
+        if isinstance(urls, str):
+            urls = [urls]
+            
         instance = cls(urls, template)
         for plugin_name in instance.installed_plugins.keys():
             instance.activate(plugin_name)
@@ -223,11 +226,15 @@ class Plugins:
     def list_active(self) -> List[str]:
         return list(self.active_plugins.keys())
 
-    def install_plugins(self, urls: List[str]):
+    def install_plugins(self, urls: Union[str, List[str]]):
+        if isinstance(urls, str):
+            urls = [urls]
+
         for url in urls:
             manifest, openapi_spec = spec_from_url(url)
             openapi_object = PluginObject(url, openapi_spec, manifest)
             self.installed_plugins[openapi_object.name_for_model] = openapi_object
+
 
     def activate(self, plugin_name: str):
         plugin = self.installed_plugins.get(plugin_name)
