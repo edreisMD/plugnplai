@@ -21,3 +21,6 @@ build-docs:
 	cd docs && make html
 
 all: autoformat build-docs
+# Docs
+watch-docs: ## Build and watch documentation
+	sphinx-autobuild doc/ doc/_build/html --open-browser --watch $(GIT_ROOT)/plugnplai
