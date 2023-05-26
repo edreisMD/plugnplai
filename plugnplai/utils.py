@@ -22,12 +22,14 @@ def make_request_get(url: str, timeout=5):
         return None
     return response
 
-def get_plugins(filter: str = None, category: str = None, provider: str = "plugnplai"):
+def get_plugins(filter: str = None, verified_for = None, category: str = None, provider: str = "plugnplai"):
     if provider == "plugnplai":
         base_url = "https://www.plugnplai.com/_functions"
         # Construct the endpoint URL based on the filter and category arguments
         if filter in ["working", "ChatGPT"]:
             url = f'{base_url.strip("/")}/getUrls/{filter}'
+        elif verified_for in ["langchain", "plugnplai"]:
+            url = f'{base_url.strip("/")}/getUrls/{verified_for}'
         elif category is not None:
             url = f'{base_url.strip("/")}/getCategoryUrls/{category}'
         else:
