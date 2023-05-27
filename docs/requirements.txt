@@ -7,4 +7,4 @@ sphinx-autobuild
 sphinx_rtd_theme
 nbsphinx
 jsonref
-langchain==0.0.18
+langchain
