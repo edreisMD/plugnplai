@@ -1,7 +1,8 @@
 Welcome to plugnplai
 =====================================
 
-# Overview
+Overview
+^^^^^^^^
 
 Plug and Plai is an open source library aiming to simplify the integration of AI plugins into open-source language models (LLMs).
 
