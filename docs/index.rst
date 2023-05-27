@@ -44,6 +44,5 @@ It provides utility functions to get a list of active plugins from [plugnplai.co
    :hidden:
 
    
-   reference/plugnplai.rst
    reference/modules.rst
 
