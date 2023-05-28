@@ -1,0 +1,22 @@
+spec_from_url
+=============
+
+.. autofunction:: spec_from_url
+
+Gets the OpenAPI spec from a URL.
+
+Parameters
+----------
+url : str
+    The URL of the OpenAPI spec.
+
+Returns
+-------
+dict
+    The OpenAPI spec.
+
+Purpose
+-------
+This function is used to retrieve an OpenAPI spec given its URL. The OpenAPI spec describes the endpoints, parameters and responses of an API.
+
+
