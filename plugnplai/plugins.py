@@ -239,7 +239,7 @@ class Plugins:
 
     def activate(self, plugin_name: str):
         if len(self.active_plugins) >= self.max_plugins:
-            print(f'Cannot activate more than {self.max_plugins} plugins.')
+            print(f'Cannot activate more than 3 plugins.')
             return
             
         plugin = self.installed_plugins.get(plugin_name)
