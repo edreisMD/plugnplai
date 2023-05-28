@@ -207,6 +207,7 @@ class Plugins:
         self.template = template
         self.prompt = None
         self.tokens = None
+        self.max_plugins = 3
 
         self.install_plugins(urls)
 
@@ -237,6 +238,10 @@ class Plugins:
 
 
     def activate(self, plugin_name: str):
+        if len(self.active_plugins) >= self.max_plugins:
+            print(f'Cannot activate more than 3 plugins.')
+            return
+            
         plugin = self.installed_plugins.get(plugin_name)
         if plugin is None:
             print(f'Plugin {plugin_name} not found')
