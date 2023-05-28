@@ -1,0 +1,22 @@
+parse_llm_response
+===================  
+
+.. autofunction:: parse_llm_response  
+
+Parses an LLM response to get the plugin call.
+
+Parameters
+----------
+response : str
+    The response from the LLM.
+
+Returns
+-------
+dict
+    A dictionary with the plugin name, operation ID and parameters.
+
+Purpose
+-------
+This function is used to parse a response from a language model to extract details about a plugin call, including the plugin name, operation ID and parameters.
+
+
