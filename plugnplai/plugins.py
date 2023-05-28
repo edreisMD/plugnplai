@@ -6,11 +6,13 @@ from plugnplai.prompt_templates import *
 
 
 def count_tokens(text: str, model_name: str = "gpt-4") -> int:
+    """Counts the number of tokens in the given text for the specified model."""
     encoding = tiktoken.encoding_for_model(model_name)
     num_tokens = len(encoding.encode(text))
     return num_tokens
 
 def build_request_body(schema: Dict[str, Any], parameters: Dict[str, Any]) -> Any:
+  """Builds a request body from the given schema and parameters."""
   if schema.get('type') == 'object':
       properties = schema.get('properties', {})
       required = schema.get('required', [])
@@ -29,6 +31,7 @@ def build_request_body(schema: Dict[str, Any], parameters: Dict[str, Any]) -> An
 
 class PluginObject():
     def __init__(self, url: str, spec: Dict[str, Any], manifest: Dict[str, Any]):
+        """Initializes a PluginObject."""
         self.openapi = spec.get('openapi')
         self.info = spec.get('info')
         self.paths = spec.get('paths')
@@ -44,6 +47,7 @@ class PluginObject():
 
 
     def get_operation_details(self) -> Dict[str, Any]:
+        """Gets the operation details from the OpenAPI specification."""
         operation_details_dict = {}
 
         # Use url as a fallback if servers is not provided
@@ -90,6 +94,7 @@ class PluginObject():
 
 
     def call_operation(self, operation_id: str, parameters: Dict[str, Any]) -> Optional[requests.Response]:
+        """Calls an operation from the OpenAPI specification."""
         # Get the operation details from the operation_details_dict attribute
         operation_details = self.operation_details_dict.get(operation_id)
         if not operation_details:
@@ -134,6 +139,7 @@ class PluginObject():
 
 
     def describe_api(self) -> str:
+        """Describes the API using a template."""
         # Template for the whole API description
         api_template = '// {description_for_model}\nnamespace {name_for_model} {{{operations}}}'
         
@@ -202,6 +208,7 @@ Assistant called a plugin in response to this human message:
 
 class Plugins:
     def __init__(self, urls: List[str], template: str = template_gpt4):
+        """Initializes the Plugins class."""
         self.installed_plugins = {}
         self.active_plugins = {}
         self.template = template
@@ -213,6 +220,7 @@ class Plugins:
 
     @classmethod
     def install_and_activate(cls, urls: Union[str, List[str]], template: str = template_gpt4):
+        """Installs and activates plugins."""
         if isinstance(urls, str):
             urls = [urls]
             
@@ -222,12 +230,15 @@ class Plugins:
         return instance
 
     def list_installed(self) -> List[str]:
+        """Lists installed plugins."""
         return list(self.installed_plugins.keys())
 
     def list_active(self) -> List[str]:
+        """Lists active plugins."""
         return list(self.active_plugins.keys())
 
     def install_plugins(self, urls: Union[str, List[str]]):
+        """Installs plugins from the given URLs."""
         if isinstance(urls, str):
             urls = [urls]
 
@@ -238,6 +249,7 @@ class Plugins:
 
 
     def activate(self, plugin_name: str):
+        """Activates a plugin."""
         if len(self.active_plugins) >= self.max_plugins:
             print(f'Cannot activate more than 3 plugins.')
             return
@@ -252,12 +264,14 @@ class Plugins:
         self.tokens = count_tokens(self.prompt)
 
     def deactivate(self, plugin_name: str):
+        """Deactivates a plugin."""
         if plugin_name in self.active_plugins:
             del self.active_plugins[plugin_name]
             self.prompt = self.fill_prompt(self.template)
             self.tokens = count_tokens(self.prompt)
 
     def fill_prompt(self, template: str, active_plugins: Optional[List[str]] = None) -> str:
+        """Fills the prompt template with plugin descriptions."""
         plugins_descriptions = ''
 
         if active_plugins is not None:
@@ -274,11 +288,13 @@ class Plugins:
         return prompt
 
     def count_prompt_tokens(self) -> int:
+        """Counts the number of tokens in the prompt."""
         tokenizer = Tokenizer(models.Model.load("gpt-4"))
         tokens = tokenizer.encode(self.prompt)
         return len(tokens)
 
     def call_api(self, plugin_name: str, operation_id: str, parameters: Dict[str, Any]) -> Optional[requests.Response]:
+        """Calls an API operation from a plugin."""
         # Get the PluginObject for the specified plugin
         openapi_object = self.active_plugins.get(plugin_name)
 
@@ -299,6 +315,7 @@ class Plugins:
         return response
 
     def apply_plugins(self, llm_function: Callable[..., str]) -> Callable[..., str]:
+        """Applies plugins to an LLM function."""
         def decorator(user_message: str, *args: Any, **kwargs: Any) -> str:
             # Step 1: Add self.prompt as a prefix of the user's message
             message_with_prompt = f"{self.prompt}\n{user_message}"
@@ -336,3 +353,4 @@ class Plugins:
             return llm_response
 
         return decorator
+
