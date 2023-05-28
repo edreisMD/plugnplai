@@ -36,3 +36,4 @@ get_plugin_manifest
 
 Get the manifest of a plugin from its URL.
 
+
