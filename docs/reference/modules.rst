@@ -32,23 +32,3 @@ get_plugin_manifest
 
 Get the manifest of a plugin from its URL.
 
-.. _extract_openapi_spec:
-
-extract_openapi_spec
---------------------  
-
-.. autofunction:: plugnplai.utils.extract_openapi_spec
-   :noindex:
-
-Extract the OpenAPI specification from a plugin manifest.
-
-.. _load_plugin:  
-
-load_plugin
------------
-
-.. autofunction:: plugnplai.utils.load_plugin
-   :noindex:  
-
-Load a plugin from its manifest URL.
-
