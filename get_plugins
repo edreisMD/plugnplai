@@ -1,0 +1,22 @@
+get_plugins
+===========
+
+.. autofunction:: get_plugins
+
+Gets plugins from the PlugnPlai API.
+
+Parameters
+----------
+category : str, optional
+    The category of plugins to get.
+
+Returns
+-------
+list
+    A list of plugin URLs.
+
+Purpose
+-------
+This function is used to retrieve plugins from the PlugnPlai API. It can filter plugins by category.
+
+
