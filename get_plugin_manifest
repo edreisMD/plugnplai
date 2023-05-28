@@ -1,0 +1,22 @@
+get_plugin_manifest 
+====================
+
+.. autofunction:: get_plugin_manifest  
+
+Gets the manifest for a plugin.
+
+Parameters
+----------
+url : str
+    The URL of the plugin.
+
+Returns
+-------
+dict
+    The manifest for the plugin.
+
+Purpose
+-------
+This function is used to retrieve the manifest for a plugin given its URL. The manifest contains metadata about the plugin such as its name, description, author, etc.
+
+
