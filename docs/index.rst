@@ -41,14 +41,6 @@ It provides utility functions to get a list of active plugins from https://plugn
 
 .. toctree::
    :maxdepth: 2
-   :caption: Utility Functions
-   :hidden:
-
-   reference/modules.rst
-
-
-.. toctree::
-   :maxdepth: 2
    :caption: Reference
    :hidden:
 
