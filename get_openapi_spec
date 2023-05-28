@@ -1,0 +1,22 @@
+get_openapi_spec
+================
+
+.. autofunction:: get_openapi_spec
+
+Gets the OpenAPI spec for a plugin.
+
+Parameters
+----------
+url : str
+    The URL of the plugin.
+
+Returns
+-------
+dict
+    The OpenAPI spec for the plugin.
+
+Purpose
+-------
+This function is used to retrieve the OpenAPI spec for a plugin given its URL. The OpenAPI spec describes the endpoints, parameters and responses of the API.
+
+
