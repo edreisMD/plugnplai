@@ -24,6 +24,7 @@ get_plugins
 
 Get a list of plugins from the PlugnPlai directory.
 
+
 .. _get_plugin_manifest:  
 
 get_plugin_manifest
