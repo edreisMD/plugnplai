@@ -8,6 +8,15 @@ import yaml
 import re
 
 def make_request_get(url: str, timeout=5):
+    """Make an HTTP GET request.
+
+    Args:
+        url (str): URL to make request to.
+        timeout (int, optional): Timeout in seconds. Defaults to 5.
+
+    Returns:
+        requests.Response: Response from request.
+    """
     try:
         response = requests.get(url, timeout=timeout)
         response.raise_for_status()  # Raises stored HTTPError, if one occurred.
@@ -23,6 +32,17 @@ def make_request_get(url: str, timeout=5):
     return response
 
 def get_plugins(filter: str = None, verified_for = None, category: str = None, provider: str = "plugnplai"):
+    """Get list of plugin URLs from a provider.
+
+    Args:
+        filter (str, optional): Filter to apply. Options are "working" or "ChatGPT". Defaults to None.
+        verified_for (str, optional): Filter to plugins verified for a framework. Options are "langchain" or "plugnplai". Defaults to None.
+        category (str, optional): Category to filter for. Defaults to None.
+        provider (str, optional): Provider to get plugins from. Options are "plugnplai" or "pluginso". Defaults to "plugnplai".
+
+    Returns:
+        list: List of plugin URLs.
+    """
     if provider == "plugnplai":
         base_url = "https://www.plugnplai.com/_functions"
         # Construct the endpoint URL based on the filter and category arguments
@@ -54,6 +74,14 @@ def get_plugins(filter: str = None, verified_for = None, category: str = None, p
             return f"An error occurred: {response.status_code} {response.reason}"
 
 def get_category_names(provider: str = "plugnplai"):
+    """Get list of category names from a provider.
+
+    Args:
+        provider (str, optional): Provider to get category names from. Options are "plugnplai" or "pluginso". Defaults to "plugnplai".
+
+    Returns:
+        list: List of category names.
+    """
     if provider == "plugnplai":
         base_url = "https://www.plugnplai.com/_functions"
         url = f'{base_url.strip("/")}/categoryNames'
@@ -71,11 +99,28 @@ def get_category_names(provider: str = "plugnplai"):
 
 # given a plugin url, get the ai-plugin.json manifest, in "/.well-known/ai-plugin.json"
 def get_plugin_manifest(url: str):
+    """Get plugin manifest from URL.
+
+    Args:
+        url (str): Plugin URL.
+
+    Returns:
+        dict: Plugin manifest.
+    """
     urlJson = os.path.join(url, ".well-known/ai-plugin.json")
     response = make_request_get(urlJson)
     return response.json()
 
 def _is_partial_url(url, openapi_url):
+    """Check if OpenAPI URL is partial.
+
+    Args:
+        url (str): Base URL.
+        openapi_url (str): OpenAPI URL.
+
+    Returns:
+        str: Full OpenAPI URL.
+    """
     if openapi_url.startswith("/"):
         # remove slash in the end of url if present
         url = url.strip("/")
@@ -86,12 +131,28 @@ def _is_partial_url(url, openapi_url):
     return openapi_url
 
 def get_openapi_url(url, manifest):
+    """Get full OpenAPI URL from plugin URL and manifest.
+
+    Args:
+        url (str): Plugin URL.
+        manifest (dict): Plugin manifest.
+
+    Returns:
+        str: Full OpenAPI URL.
+    """
     openapi_url = manifest["api"]["url"]
     return _is_partial_url(url, openapi_url)
 
 # This code uses the following source: https://github.com/hwchase17/langchain/blob/master/langchain/tools/plugin.py
 def marshal_spec(txt: str) -> dict:
-    """Convert the yaml or json serialized spec to a dict."""
+    """Convert YAML or JSON serialized spec to dict.
+
+    Args:
+        txt (str): YAML or JSON serialized spec.
+
+    Returns:
+        dict: Spec as a dict.
+    """
     try:
         return json.loads(txt)
     except json.JSONDecodeError:
@@ -99,6 +160,14 @@ def marshal_spec(txt: str) -> dict:
 
 
 def get_openapi_spec(openapi_url):
+    """Get OpenAPI spec from URL.
+
+    Args:
+        openapi_url (str): OpenAPI URL.
+
+    Returns:
+        dict: OpenAPI spec.
+    """
     openapi_spec_str = make_request_get(openapi_url, timeout=20).text
     openapi_spec = marshal_spec(openapi_spec_str)
     # Use jsonref to resolve references
@@ -107,6 +176,15 @@ def get_openapi_spec(openapi_url):
 
 
 def spec_from_url(url):
+    """Get plugin manifest and OpenAPI spec from URL.
+
+    Args:
+        url (str): Plugin URL.
+
+    Returns:
+        dict: Plugin manifest.
+        dict: OpenAPI spec.
+    """
     manifest = get_plugin_manifest(url)
     openapi_url = get_openapi_url(url, manifest)
     openapi_spec = get_openapi_spec(openapi_url)
@@ -114,6 +192,16 @@ def spec_from_url(url):
 
 
 def extract_parameters(openapi_spec, path, method):
+    """Extract parameters from OpenAPI spec for a path and method.
+
+    Args:
+        openapi_spec (dict): OpenAPI spec.
+        path (str): Path.
+        method (str): Method.
+
+    Returns:
+        dict: Parameters.
+    """
     parameters = {}
 
     # Extract path parameters and query parameters
@@ -136,6 +224,14 @@ def extract_parameters(openapi_spec, path, method):
 
 
 def extract_all_parameters(openapi_spec):
+    """Extract all parameters from OpenAPI spec.
+
+    Args:
+        openapi_spec (dict): OpenAPI spec.
+
+    Returns:
+        dict: All parameters.
+    """
     all_parameters = {}
 
     # Mapping of long type names to short names
@@ -191,6 +287,14 @@ def extract_all_parameters(openapi_spec):
     return all_parameters
 
 def parse_llm_response(response: str) -> dict:
+    """Parse LLM response to extract API call information.
+
+    Args:
+        response (str): LLM response.
+
+    Returns:
+        dict: API call information.
+    """
     pattern = r'<API>\s*(.*?)\s*\((.*?)\)\s*</API>'
     match = re.search(pattern, response, re.DOTALL)
 
