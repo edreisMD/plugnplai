@@ -1,0 +1,22 @@
+get_openapi_url
+================
+
+.. autofunction:: get_openapi_url
+
+Gets the OpenAPI URL for a plugin.
+
+Parameters
+----------
+url : str
+    The URL of the plugin.
+
+Returns
+-------
+str
+    The OpenAPI URL for the plugin.
+
+Purpose
+-------
+This function is used to retrieve the OpenAPI URL for a plugin given its URL. The OpenAPI URL points to the OpenAPI spec which describes the endpoints, parameters and responses of the API.
+
+
