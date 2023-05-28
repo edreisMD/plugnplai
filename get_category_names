@@ -1,0 +1,17 @@
+get_category_names
+===================
+
+.. autofunction:: get_category_names
+
+Gets category names from the PlugnPlai API.  
+
+Returns
+-------
+list
+    A list of category names.
+
+Purpose
+-------
+This function is used to retrieve category names from the PlugnPlai API. The category names represent types of plugins such as "travel", "shopping", "weather", etc.
+
+
