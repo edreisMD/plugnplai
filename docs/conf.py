@@ -9,7 +9,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../'))
 print(os.path.abspath('.'))
-project = ': 🎸plugnplai'
+project = '🎸plugnplai'
 copyright = '2023, Eduardo Reis'
 author = 'Eduardo Reis'
 release = '0.0.1'
@@ -40,7 +40,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "furo"
+html_theme = "sphinx-book-theme"
 html_title = project + " " + "0.0.1"
 # html_static_path = ["_static"]
 
