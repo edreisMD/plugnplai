@@ -268,7 +268,34 @@ Assistant called a plugin in response to this human message:
 """
 
 class Plugins:
+    """Manages installed and active plugins.
+    
+    Attributes
+    ----------
+    installed_plugins : dict
+        A dictionary of installed PluginObject instances, keyed by plugin name.
+    active_plugins : dict
+        A dictionary of active PluginObject instances, keyed by plugin name.
+    template : str
+        The prompt template to use.
+    prompt : str
+        The generated prompt with descriptions of active plugins.
+    tokens : int
+        The number of tokens in the prompt.
+    max_plugins : int
+        The maximum number of plugins that can be active at once.
+    """
+    
     def __init__(self, urls: List[str], template: str = template_gpt4):
+        """Initialize the Plugins class.
+        
+        Parameters
+        ----------
+        urls : list
+            A list of plugin URLs.
+        template : str, optional
+            The prompt template to use. Defaults to template_gpt4.
+        """
         self.installed_plugins = {}
         self.active_plugins = {}
         self.template = template
@@ -280,6 +307,20 @@ class Plugins:
 
     @classmethod
     def install_and_activate(cls, urls: Union[str, List[str]], template: str = template_gpt4):
+        """Install plugins from URLs and activate them.
+        
+        Parameters
+        ----------
+        urls : str or list
+            A single URL or list of URLs.
+        template : str, optional
+            The prompt template to use. Defaults to template_gpt4.
+            
+        Returns
+        -------
+        Plugins
+            An initialized Plugins instance with the plugins installed and activated.
+        """
         if isinstance(urls, str):
             urls = [urls]
             
@@ -289,12 +330,33 @@ class Plugins:
         return instance
 
     def list_installed(self) -> List[str]:
+        """Get a list of installed plugin names.
+        
+        Returns
+        -------
+        list
+            A list of installed plugin names.
+        """
         return list(self.installed_plugins.keys())
 
     def list_active(self) -> List[str]:
+        """Get a list of active plugin names.
+        
+        Returns
+        -------
+        list
+            A list of active plugin names.
+        """
         return list(self.active_plugins.keys())
 
     def install_plugins(self, urls: Union[str, List[str]]):
+        """Install plugins from URLs.
+        
+        Parameters
+        ----------
+        urls : str or list
+            A single URL or list of URLs.
+        """
         if isinstance(urls, str):
             urls = [urls]
 
@@ -305,6 +367,13 @@ class Plugins:
 
 
     def activate(self, plugin_name: str):
+        """Activate an installed plugin.
+        
+        Parameters
+        ----------
+        plugin_name : str
+            The name of the plugin to activate.
+        """
         if len(self.active_plugins) >= self.max_plugins:
             print(f'Cannot activate more than 3 plugins.')
             return
@@ -319,12 +388,33 @@ class Plugins:
         self.tokens = count_tokens(self.prompt)
 
     def deactivate(self, plugin_name: str):
+        """Deactivate an active plugin.
+        
+        Parameters
+        ----------
+        plugin_name : str
+            The name of the plugin to deactivate.
+        """
         if plugin_name in self.active_plugins:
             del self.active_plugins[plugin_name]
             self.prompt = self.fill_prompt(self.template)
             self.tokens = count_tokens(self.prompt)
 
     def fill_prompt(self, template: str, active_plugins: Optional[List[str]] = None) -> str:
+        """Generate a prompt with descriptions of active plugins.
+        
+        Parameters
+        ----------
+        template : str
+            The prompt template to use.
+        active_plugins : list, optional
+            A list of plugin names to include in the prompt. If None, uses all active plugins. 
+            
+        Returns
+        -------
+        str
+            The generated prompt.
+        """
         plugins_descriptions = ''
 
         if active_plugins is not None:
@@ -341,11 +431,34 @@ class Plugins:
         return prompt
 
     def count_prompt_tokens(self) -> int:
+        """Count the number of tokens in the prompt.
+        
+        Returns
+        -------
+        int
+            The number of tokens in the prompt.
+        """
         tokenizer = Tokenizer(models.Model.load("gpt-4"))
         tokens = tokenizer.encode(self.prompt)
         return len(tokens)
 
     def call_api(self, plugin_name: str, operation_id: str, parameters: Dict[str, Any]) -> Optional[requests.Response]:
+        """Call an operation in an active plugin.
+        
+        Parameters
+        ----------
+        plugin_name : str
+            The name of the plugin.
+        operation_id : str
+            The ID of the operation to call.
+        parameters : dict
+            The parameters to pass to the operation.
+            
+        Returns
+        -------
+        requests.Response or None
+            The response from the API call, or None if unsuccessful.
+        """
         # Get the PluginObject for the specified plugin
         openapi_object = self.active_plugins.get(plugin_name)
 
@@ -366,6 +479,18 @@ class Plugins:
         return response
 
     def apply_plugins(self, llm_function: Callable[..., str]) -> Callable[..., str]:
+        """Decorate an LLM function to apply active plugins.
+        
+        Parameters
+        ----------
+        llm_function : callable
+            The LLM function to decorate.
+            
+        Returns
+        -------
+        callable
+            The decorated LLM function.
+        """
         def decorator(user_message: str, *args: Any, **kwargs: Any) -> str:
             # Step 1: Add self.prompt as a prefix of the user's message
             message_with_prompt = f"{self.prompt}\n{user_message}"
