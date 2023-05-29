@@ -9,7 +9,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../'))
 print(os.path.abspath('.'))
-project = 'plugnplai'
+project = ': 🎸plugnplai'
 copyright = '2023, Eduardo Reis'
 author = 'Eduardo Reis'
 release = '0.0.1'
