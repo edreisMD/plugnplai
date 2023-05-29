@@ -24,12 +24,13 @@ It provides utility functions to get a list of active plugins from https://plugn
    :hidden:
 
    examples/get-list-of-plugins.md
+   examples/apply_plugins_three_steps.ipynb
+   examples/plugins_step_by_step.ipynb
+   examples/create_prompt_plugins.ipynb
    examples/plugin_retriever_with_langchain_agent_clean_version.ipynb
    examples/plugin_retriever_with_langchain_agent.ipynb
-   examples/apply_plugins_three_steps.ipynb
-   examples/create_prompt_plugins.ipynb
-   examples/plugins_step_by_step.ipynb
 
+   
 
 .. toctree::
    :maxdepth: 2
@@ -45,6 +46,6 @@ It provides utility functions to get a list of active plugins from https://plugn
    :hidden:
 
    
-   reference/modules.rst
-
-
+   reference/plugin_object.rst
+   reference/plugins.rst
+   reference/embeddings.rst
