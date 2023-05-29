@@ -131,12 +131,12 @@ print(plugins.tokens)
 This will print the prompt with plugin descriptions and the number of tokens.
 
 
-### parse_llm_response()
+### Parse the LLM Response searching for API Tag
 
 The `parse_llm_response()` function parses an LLM response for API calls. It looks for the `[API]` pattern defined in the `plugins.prompt` and extracts the plugin name, operation ID, and parameters.
 
 
-### call_api()
+### Call API
 
 The `call_api()` function calls an operation in an active plugin. It takes the plugin name, operation ID, and parameters extracted by `parse_llm_response()` and makes a request to the plugin API.
 
