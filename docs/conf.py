@@ -9,7 +9,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../'))
 print(os.path.abspath('.'))
-project = ': 🎸plugnplai'
+project = '🎸plugnplai'
 copyright = '2023, Eduardo Reis'
 author = 'Eduardo Reis'
 release = '0.0.1'
@@ -26,6 +26,7 @@ extensions = [
     "sphinx_rtd_theme",
     "sphinx.ext.mathjax",
     "myst_nb",
+    "sphinx_book_theme"
 ]
 
 myst_heading_anchors = 4
@@ -40,11 +41,16 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "furo"
+html_theme = "sphinx-book-theme"
 html_title = project + " " + "0.0.1"
 # html_static_path = ["_static"]
 
-html_css_files = [
-    "css/custom.css",
-]
+html_theme_options = {
+    "repository_url": "https://github.com/edreisMD/plugnplai",
+    "use_edit_page_button": True,
+    "use_issues_button": True,
+    "use_repository_button": True,
+    "use_download_button": True,
+}
+
 nb_execution_mode = "off"
