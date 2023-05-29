@@ -123,6 +123,14 @@ print(plugins.prompt)
 print(plugins.tokens)
 ```
 
+### parse_llm_response()
+
+The `parse_llm_response()` function parses an LLM response for API calls. It looks for the `[API]` pattern defined in the `plugins.prompt` and extracts the plugin name, operation ID, and parameters.
+
+### call_api()
+
+The `call_api()` function calls an operation in an active plugin. It takes the plugin name, operation ID, and parameters extracted by `parse_llm_response()` and makes a request to the plugin API.
+
 ### Plugins Retrieval
 **Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
