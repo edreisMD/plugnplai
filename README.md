@@ -69,6 +69,8 @@ The category argument can be used to filter plugins by category. Options are:
 
 You can get a full list of category names using the get_category_names() function.
 
+The provider argument specifies which provider to get plugins from. Options are 'plugnplai' or 'pluginso'. The 'plugnplai' provider queries the plugnplai.com API, while the 'pluginso' provider queries the plugin.so API.
+
 ### Utility Functions  
 
 Help to load the plugins manifest and OpenAPI specification  
