@@ -1,75 +1,78 @@
-# 🎸 Plug and Plai
+# 🎸 Plug and Plai  
 
-Plug and Plai is an open source library aiming to simplify the integration of AI plugins into open-source language models (LLMs).
+Plug and Plai is an open source library aiming to simplify the integration of AI plugins into open-source language models (LLMs).  
 
-It provides utility functions to get a list of active plugins from [plugnplai.com](https://plugnplai.com/) directory, get plugin manifests, and extract OpenAPI specifications and load plugins.
+It provides utility functions to get a list of active plugins from [plugnplai.com](https://plugnplai.com/) directory, get plugin manifests, and extract OpenAPI specifications and load plugins.  
 
-## Installation
+## Installation  
 
-You can install Plug and PlAI using pip:
+You can install Plug and PlAI using pip:  
 
 ```python
 pip install plugnplai
-```
+```  
 
-## Quick Start Example
+## Quick Start Example  
 
-**Apply Plugins in Three Steps:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/apply_plugins_three_steps.ipynb)
-
-
-## More Examples
-
-**Load and Call Step by Step:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
-
-**Generate Prompt with Plugins Description:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/create_prompt_plugins.ipynb)
-
-**Plugins Retrieval:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
+**Apply Plugins in Three Steps:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/apply_plugins_three_steps.ipynb)  
 
 
-## Usage
+## More Examples  
 
-### Get a list of plugins
+**Load and Call Step by Step:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)  
 
-- `urls = get_plugins()`: Get a list of available plugins from a [plugins repository](https://www.plugplai.com/).
+**Generate Prompt with Plugins Description:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/create_prompt_plugins.ipynb)  
 
-- `urls = get_plugins(filter = 'ChatGPT', category='dev')`: Use 'filter' or 'category' variables to query specific plugins
+**Plugins Retrieval:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)  
 
-Example:
+
+## Usage  
+
+### Get a list of plugins  
+
+- `urls = get_plugins()`: Get a list of available plugins from a [plugins repository](https://www.plugplai.com/).  
+
+- `urls = get_plugins(filter = 'working')`: Returns only plugins that were tested and are working.  
+- `urls = get_plugins(filter = 'ChatGPT')`: Returns only plugins verified to work with ChatGPT models.
+- `urls = get_plugins(filter = 'langchain')`: Returns only plugins verified to work with LangChain.
+- `urls = get_plugins(category = 'category_name')`: Returns plugins of a given category like 'travel', 'ecommerce', etc.
+
+Example:  
 
 ```python
-import plugnplai
+import plugnplai  
 
-# Get all plugins from plugnplai.com
-urls = plugnplai.get_plugins()
+# Get all plugins from plugnplai.com  
+urls = plugnplai.get_plugins()   
 
-#  Get ChatGPT plugins - only ChatGPT verified plugins
-urls = plugnplai.get_plugins(filter = 'ChatGPT')
+#  Get ChatGPT plugins - only ChatGPT verified plugins  
+urls = plugnplai.get_plugins(filter = 'ChatGPT')   
 
-#  Get working plugins - only tested plugins (in progress)
-urls = plugnplai.get_plugins(filter = 'working')
+#  Get working plugins - only tested plugins (in progress)  
+urls = plugnplai.get_plugins(filter = 'working')   
 
-#  Get plugins by category - only tested plugins (in progress)
-urls = plugnplai.get_plugins(category = 'travel')
+#  Get plugins by category - only tested plugins (in progress)  
+urls = plugnplai.get_plugins(category = 'travel')   
 
-#  Get the names list of categories
+#  Get the names list of categories  
 urls = plugnplai.get_category_names()
 ```
 
-### Utility Functions
+### Utility Functions  
 
-Help to load the plugins manifest and OpenAPI specification
+Help to load the plugins manifest and OpenAPI specification  
 
-- `manifest = get_plugin_manifest(url)`: Get the AI plugin manifest from the specified plugin URL.
-- `specUrl = get_openapi_url(url, manifest)`: Get the OpenAPI URL from the plugin manifest.
-- `spec = get_openapi_spec(openapi_url)`: Get the OpenAPI specification from the specified OpenAPI URL.
-- `manifest, spec = spec_from_url(url)`: Returns the Manifest and OpenAPI specification from the plugin URL.
+- `manifest = get_plugin_manifest(url)`: Get the AI plugin manifest from the specified plugin URL.  
+- `specUrl = get_openapi_url(url, manifest)`: Get the OpenAPI URL from the plugin manifest.  
+- `spec = get_openapi_spec(openapi_url)`: Get the OpenAPI specification from the specified OpenAPI URL.  
+- `manifest, spec = spec_from_url(url)`: Returns the Manifest and OpenAPI specification from the plugin URL.  
 
-Example:
+Example:  
 
 ```python
-import plugnplai
+import plugnplai  
 
-# Get the Manifest and the OpenAPI specification from the plugin URL
+# Get the Manifest and the OpenAPI specification from the plugin URL  
 manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```
 
