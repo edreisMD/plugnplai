@@ -141,6 +141,37 @@ The `parse_llm_response()` function parses an LLM response searching for API cal
 The `call_api()` function calls an operation in an active plugin. It takes the plugin name, operation ID, and parameters extracted by `parse_llm_response()` and makes a request to the plugin API.
 
 
+### Apply Plugins
+
+The `@plugins.apply_plugins` decorator can be used to easily apply active plugins to an LLM function. To use it:
+
+1. Import the Plugins class and decorator:
+
+```python
+from plugnplai import Plugins, plugins.apply_plugins
+```
+
+2. Define your LLM function, that necessarily takes a string (the user input) as the first argument and returns a string (the response):
+
+```python
+@plugins.apply_plugins
+def call_llm(user_input):
+  ...
+  return response
+```
+
+3. The decorator will handle the following:
+
+- Prepending the prompt (with plugin descriptions) to the user input 
+- Checking the LLM response for API calls (the <API>...</API> pattern)
+- Calling the specified plugins 
+- Summarizing the API calls in the LLM response
+- Calling the LLM function again with the summary to get a final response
+
+4. If no API calls are detected, the original LLM response is returned.
+
+To more details on the implementation of these steps, see example "Step by Step": [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
+
 ### Plugins Retrieval
 **Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
