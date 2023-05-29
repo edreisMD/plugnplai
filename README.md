@@ -1,6 +1,6 @@
 # 🎸 Plug and Plai
 
-Plug and Plai is an open source library aiming to simplify the integration of AI plugins into open-source language models (LLMs). 
+Plug and Plai is an open source library aiming to simplify the integration of AI plugins into open-source language models (LLMs).
 
 It provides utility functions to get a list of active plugins from [plugnplai.com](https://plugnplai.com/) directory, get plugin manifests, and extract OpenAPI specifications and load plugins.
 
@@ -32,9 +32,9 @@ pip install plugnplai
 
 - `urls = get_plugins()`: Get a list of available plugins from a [plugins repository](https://www.plugplai.com/).
 
-- `urls = get_plugins(filter = 'ChatGPT', category='dev')`: Use 'filter' or 'category' variables to query specific plugins 
+- `urls = get_plugins(filter = 'ChatGPT', category='dev')`: Use 'filter' or 'category' variables to query specific plugins
 
-Example: 
+Example:
 
 ```python
 import plugnplai
@@ -64,12 +64,12 @@ Help to load the plugins manifest and OpenAPI specification
 - `spec = get_openapi_spec(openapi_url)`: Get the OpenAPI specification from the specified OpenAPI URL.
 - `manifest, spec = spec_from_url(url)`: Returns the Manifest and OpenAPI specification from the plugin URL.
 
-Example: 
+Example:
 
 ```python
 import plugnplai
 
-# Get the Manifest and the OpenAPI specification from the plugin URL 
+# Get the Manifest and the OpenAPI specification from the plugin URL
 manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```
 
@@ -80,11 +80,11 @@ manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 from plugnplai import Plugins
 
 ###### ACTIVATE A MAX OF 3 PLUGINS ######
-# Context length limits the number of plugins you can activate, 
-# you need to make sure the prompt fits in your context lenght, 
+# Context length limits the number of plugins you can activate,
+# you need to make sure the prompt fits in your context lenght,
 # still leaving space for the user message
 
-# Initialize 'Plugins' by passing a list of urls, this function will 
+# Initialize 'Plugins' by passing a list of urls, this function will
 # load the plugins and build a default description to be used as prefix prompt
 plugins = Plugins.install_and_activate(urls)
 
@@ -100,7 +100,7 @@ Example on installing (loading) all plugins, and activating a few later:
 ```python
 from plugnplai import Plugins
 
-# If you just want to load the plugins, but activate only 
+# If you just want to load the plugins, but activate only
 # some of them later use Plugins(urls) instead
 plugins = Plugins(urls)
 
@@ -114,14 +114,21 @@ plugins.activate(name3)
 
 # Deactivate the last plugin
 plugins.deactivate(name3)
+```
 
-# Print the names of the active plugins
-print(plugins.list_active)
+### Prompt and Tokens Counting
 
-# Look at the current prompt
+The `plugins.prompt` attribute contains a prompt with descriptions of the active plugins.
+The `plugins.tokens` attribute contains the number of tokens in the prompt.
+
+For example:
+```python
+plugins = Plugins.install_and_activate(urls)
 print(plugins.prompt)
 print(plugins.tokens)
 ```
+
+This will print the prompt with plugin descriptions and the number of tokens.
 
 ### Plugins Retrieval
 **Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
@@ -130,7 +137,7 @@ print(plugins.tokens)
 ```python
 from plugnplai import PluginRetriever
 
-# Initialize the plugins retriever vector database and index the plugins descriptions. 
+# Initialize the plugins retriever vector database and index the plugins descriptions.
 # Loading the plugins from plugnplai.com directory
 plugin_retriever = PluginRetriever.from_directory()
 
@@ -144,32 +151,32 @@ plugin_retriever.retrieve_names("what shirts can i buy?")
 Plug and Plai is an open source library, and we welcome contributions from the entire community. If you're interested in contributing to the project, please feel free to fork, submit pull requests, report issues, or suggest new features.
 
 #### To dos
-- [x] [Load] Define a default object to read plugins - use LangChain standard? (for now using only manifest and specs jsons)
-- [ ] [Load] Fix breaking on reading certain plugins specs
-- [x] [Load] Accept different specs methods and versions (param, query, body)
-- [x] [Prompt] Build a utility function to return a default prompts for a plugin
-- [x] [Prompt] Fix prompt building for body (e.g. "Speak") 
-- [x] [Prompt] Build a utility function to return a default prompts for a set of plugins
-- [x] [Prompt] Build a utility function to count tokens of the plugins prompt
-- [ ] [Prompt] Use the prompt tokens number to short or expand a plugin prompt, use LLM to summarize the prefix prompt
-- [x] [CallAPI] Build a function to call API given a dictionary of parameters
-- [x] [CallAPI] Add example for calling API
-- [ ] [Embeddings] Add filter option (e.g. "working", "ChatGPT") to "PluginRetriever.from_directory()"
-- [ ] [Docs] Add Sphynx docs
-- [ ] [Verification] Build automated tests to verify new plugins
-- [ ] [Verification] Build automated monitoring for working plugins
-- [ ] [Website] Build an open-source website
+- [x] [Load] Define a default object to read plugins - use LangChain standard? (for now using only manifest and specs jsons)  
+- [ ] [Load] Fix breaking on reading certain plugins specs  
+- [x] [Load] Accept different specs methods and versions (param, query, body)  
+- [x] [Prompt] Build a utility function to return a default prompts for a plugin  
+- [x] [Prompt] Fix prompt building for body (e.g. "Speak")   
+- [x] [Prompt] Build a utility function to return a default prompts for a set of plugins  
+- [x] [Prompt] Build a utility function to count tokens of the plugins prompt  
+- [ ] [Prompt] Use the prompt tokens number to short or expand a plugin prompt, use LLM to summarize the prefix prompt  
+- [x] [CallAPI] Build a function to call API given a dictionary of parameters  
+- [x] [CallAPI] Add example for calling API  
+- [ ] [Embeddings] Add filter option (e.g. "working", "ChatGPT") to "PluginRetriever.from_directory()"  
+- [ ] [Docs] Add Sphynx docs  
+- [ ] [Verification] Build automated tests to verify new plugins  
+- [ ] [Verification] Build automated monitoring for working plugins  
+- [ ] [Website] Build an open-source website  
 
 #### Project Roadmap
-1. Build auxiliary functions that helps everyone to use plugins as defined by [OpenAI](https://platform.openai.com/docs/plugins/introduction)
-2. Build in compatibility with different open-source formats (e.g. LangChain, BabyAGI, etc)
-3. Find a best prompt format for plugins, optimizing for token number and description completness
-4. Build a dataset to finetune open-source models to call plugins
-5. Finetune an open-source model to call plugins
-6. Help with authentication
-7. Etc.
+1. Build auxiliary functions that helps everyone to use plugins as defined by [OpenAI](https://platform.openai.com/docs/plugins/introduction)  
+2. Build in compatibility with different open-source formats (e.g. LangChain, BabyAGI, etc)  
+3. Find a best prompt format for plugins, optimizing for token number and description completness  
+4. Build a dataset to finetune open-source models to call plugins  
+5. Finetune an open-source model to call plugins  
+6. Help with authentication  
+7. Etc.  
 
 ## Links
 
-- Plugins directory: [https://plugnplai.com/](https://plugnplai.com/)
+- Plugins directory: [https://plugnplai.com/](https://plugnplai.com/)  
 - API reference: [https://plugnplai.github.io/](https://plugnplai.github.io/)
