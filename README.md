@@ -73,6 +73,7 @@ import plugnplai
 manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
 ```
 
+
 ### Load Plugins
 **Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
 
@@ -127,8 +128,18 @@ plugins = Plugins.install_and_activate(urls)
 print(plugins.prompt)
 print(plugins.tokens)
 ```
-
 This will print the prompt with plugin descriptions and the number of tokens.
+
+
+### Parse LLM Response for API Tag
+
+The `parse_llm_response()` function parses an LLM response searching for API calls. It looks for the `<API>` pattern defined in the `plugins.prompt` and extracts the plugin name, operation ID, and parameters.
+
+
+### Call API
+
+The `call_api()` function calls an operation in an active plugin. It takes the plugin name, operation ID, and parameters extracted by `parse_llm_response()` and makes a request to the plugin API.
+
 
 ### Plugins Retrieval
 **Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
@@ -177,6 +188,5 @@ Plug and Plai is an open source library, and we welcome contributions from the e
 7. Etc.  
 
 ## Links
-
 - Plugins directory: [https://plugnplai.com/](https://plugnplai.com/)  
 - API reference: [https://plugnplai.github.io/](https://plugnplai.github.io/)
