@@ -1,24 +1,28 @@
 # Plugnplai Documentation
 
-## A guide for docs contributors
+Plugnplai is a Python library to integrate AI plugins into large language models (LLMs) such as GPT-3.
 
-The `docs` directory contains the sphinx source text for Plugnplai's documentation.
+The main features are:
 
-This guide is made for anyone who's interested in running the docs locally, or
-contributing to the docs.
+- Get a list of AI plugins from [plugnplai.com](https://plugnplai.com)
+- Load plugins manifests and specifications
+- Generate a prompt to describe the plugins to the LLM
+- Parse the LLM response to call the plugins APIs
+- Customize the prompt template
 
-## Build Docs
+To get started, check the [Quickstart](get-started/quickstart.md) guide.
 
-If you haven't already, clone the Plugnplai Github repo to a local directory:
+The full documentation is organized into the following sections:
 
+- [Get Started](get-started/quickstart.md)
+- [Examples](examples/index.md)
+- [API Reference](reference/modules.rst)
 
-Install all dependencies required for building docs (mainly `sphinx` and its extension):
+## Contributing
 
-```bash
-pip install -r docs/requirements.txt
-```
+Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md) for details on how to contribute.
 
-Build the sphinx docs:
+## License
 
 ```bash
 cd docs
