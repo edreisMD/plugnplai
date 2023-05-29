@@ -52,7 +52,4 @@ html_theme_options = {
     "use_download_button": True,
 }
 
-html_css_files = [  
-    "css/custom.css",  
-]  
 nb_execution_mode = "off"
