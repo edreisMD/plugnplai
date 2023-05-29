@@ -123,6 +123,35 @@ print(plugins.prompt)
 print(plugins.tokens)
 ```
 
+### Using the @plugins.apply_plugins decorator
+
+The @plugins.apply_plugins decorator can be used to easily apply active plugins to an LLM function. To use it:
+
+1. Import the Plugins class and decorator:
+
+```python
+from plugnplai import Plugins, plugins.apply_plugins
+```
+
+2. Define an LLM function that takes a string (the user input) as the first argument and returns a string (the response):
+
+```python
+@plugins.apply_plugins
+def call_llm(user_input):
+  ...
+  return response
+```
+
+3. The decorator will handle the following:
+
+- Prepending the prompt (with plugin descriptions) to the user input 
+- Checking the LLM response for API calls (the [API]...[/API] pattern)
+- Calling the specified plugins 
+- Summarizing the API calls in the LLM response
+- Calling the LLM function again with the summary to get a final response
+
+4. If no API calls are detected, the original LLM response is returned.
+
 ### Plugins Retrieval
 **Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
