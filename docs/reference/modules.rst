@@ -62,7 +62,7 @@ url : str
 Returns   
 -------  
 dict
-    The manifest of the plugin.
+    The manifest of the plugin.  
 
 PluginObject
 ==============================
@@ -98,7 +98,7 @@ operation_details_dict : dict
 description_prompt : str
     A prompt describing the plugin operations.
 tokens : int
-    The number of tokens in the description_prompt.
+    The number of tokens in the description_prompt.  
 
 Returns 
 -------
