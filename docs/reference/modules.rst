@@ -71,7 +71,7 @@ PluginObject
    :members:
    :inherited-members:
    :undoc-members:
-   :show-inheritance:
+   :show-inheritance:  
 
 This class represents an AI plugin object.  
 
