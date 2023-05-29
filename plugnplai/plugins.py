@@ -32,12 +32,12 @@ def build_request_body(schema: Dict[str, Any], parameters: Dict[str, Any]) -> An
 api_return_template = """
 Assistant is a large language model with access to plugins.
 
-Assistant called a plugin in response to this human message:
+Assistant called a plugin in response to this human message: 
 # HUMAN MESSAGE
 {user_message}
 
 # API REQUEST SUMMARY
-{api_info}
+{api_info}  
 
 # API RESPONSE
 {api_response}
@@ -305,6 +305,36 @@ class Plugins:
             return llm_response
 
         return decorator
+    
+    def call_plugin_from_llm_response(self, llm_response: str) -> Optional[requests.Response]:
+        """Call a plugin from an LLM response containing <API> tags.
+        
+        Parameters
+        ----------
+        llm_response : str
+            The LLM response containing <API> tags.
+            
+        Returns
+        -------
+        requests.Response or None
+            The response from the API call, or None if unsuccessful.
+        """
+        # Step 1: Parse the LLM response to get API information
+        api_info = parse_llm_response(llm_response)
+
+        if api_info:
+            # Step 2: Call the API using self.call_api
+            plugin_name = api_info['plugin_name']
+            operation_id = api_info['operation_id']
+            parameters = api_info['parameters']
+
+            print(f"Using {plugin_name}")
+
+            api_response = self.call_api(plugin_name, operation_id, parameters)
+
+            return api_response
+
+        return None
 
 
 class PluginObject():
