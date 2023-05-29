@@ -306,7 +306,7 @@ class Plugins:
 
         return decorator
     
-    def call_plugin_from_llm_response(self, llm_response: str) -> Optional[requests.Response]:
+    def parse_and_call(self, llm_response: str) -> Optional[requests.Response]:
         """Call a plugin from an LLM response containing <API> tags.
         
         Parameters
@@ -333,7 +333,7 @@ class Plugins:
             api_response = self.call_api(plugin_name, operation_id, parameters)
 
             return api_response
-
+        
         return None
 
 
