@@ -1,6 +1,6 @@
 # Plugnplai Documentation
 
-Plugnplai is a Python library to integrate AI plugins into large language models (LLMs) such as GPT-3.
+Plugnplai is a Python library to integrate AI plugins into large language models (LLMs) such as GPT.
 
 The main features are:
 
