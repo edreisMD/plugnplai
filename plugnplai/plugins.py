@@ -28,7 +28,46 @@ def build_request_body(schema: Dict[str, Any], parameters: Dict[str, Any]) -> An
   return None
 
 class PluginObject():
+    """Represents an AI plugin object.
+    
+    Attributes
+    ----------
+    openapi : dict
+        The OpenAPI specification for the plugin.
+    info : dict
+        The info object from the OpenAPI spec.
+    paths : dict
+        The paths object from the OpenAPI spec.
+    servers : list
+        The servers list from the OpenAPI spec.
+    manifest : dict
+        The plugin manifest.
+    url : str
+        The plugin URL.
+    name_for_model : str
+        The plugin name.
+    description_for_model : str
+        The plugin description.
+    operation_details_dict : dict
+        A dictionary containing details for each operation in the plugin.
+    description_prompt : str
+        A prompt describing the plugin operations.
+    tokens : int
+        The number of tokens in the description_prompt.
+    """
+    
     def __init__(self, url: str, spec: Dict[str, Any], manifest: Dict[str, Any]):
+        """Initialize the PluginObject.
+        
+        Parameters
+        ----------
+        url : str
+            The plugin URL.
+        spec : dict
+            The OpenAPI specification.
+        manifest : dict
+            The plugin manifest.
+        """
         self.openapi = spec.get('openapi')
         self.info = spec.get('info')
         self.paths = spec.get('paths')
@@ -44,6 +83,13 @@ class PluginObject():
 
 
     def get_operation_details(self) -> Dict[str, Any]:
+        """Get the details for each operation in the plugin.
+        
+        Returns
+        -------
+        dict
+            A dictionary containing details for each operation.
+        """
         operation_details_dict = {}
 
         # Use url as a fallback if servers is not provided
@@ -90,6 +136,20 @@ class PluginObject():
 
 
     def call_operation(self, operation_id: str, parameters: Dict[str, Any]) -> Optional[requests.Response]:
+        """Call an operation in the plugin.
+        
+        Parameters
+        ----------
+        operation_id : str
+            The ID of the operation to call.
+        parameters : dict
+            The parameters to pass to the operation.
+            
+        Returns
+        -------
+        requests.Response or None
+            The response from the API call, or None if unsuccessful.
+        """
         # Get the operation details from the operation_details_dict attribute
         operation_details = self.operation_details_dict.get(operation_id)
         if not operation_details:
@@ -134,6 +194,13 @@ class PluginObject():
 
 
     def describe_api(self) -> str:
+        """Generate a prompt describing the plugin operations.
+        
+        Returns
+        -------
+        str
+            The generated prompt.
+        """
         # Template for the whole API description
         api_template = '// {description_for_model}\nnamespace {name_for_model} {{{operations}}}'
         
