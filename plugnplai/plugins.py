@@ -479,6 +479,37 @@ class Plugins:
 
         return response
 
+    def parse_and_call(self, llm_response: str) -> Optional[str]:
+        """Parse an LLM response for API calls and call the specified plugins.
+        
+        Parameters
+        ----------
+        llm_response : str
+            The LLM response to parse.
+            
+        Returns
+        -------
+        str or None
+            The API response, or None if unsuccessful.
+        """
+        # Step 1: Parse the LLM response to get API information
+        api_info = parse_llm_response(llm_response)
+
+        if api_info:
+            # Step 2: Call the API using self.call_api
+            plugin_name = api_info['plugin_name']
+            operation_id = api_info['operation_id']
+            parameters = api_info['parameters']
+
+            print(f"Using {plugin_name}")
+
+            api_response = self.call_api(plugin_name, operation_id, parameters)
+
+            if api_response is not None:
+                return api_response.text
+
+        return None
+
     def apply_plugins(self, llm_function: Callable[..., str]) -> Callable[..., str]:
         """Decorate an LLM function to apply active plugins.
         
@@ -501,29 +532,19 @@ class Plugins:
 
             # Step 3: Check if the response contains '<API>'
             if '<API>' in llm_response:
-                # Step 4: Parse the LLM response to get API information
-                api_info = parse_llm_response(llm_response)
+                # Step 4: Parse the LLM response and call plugins
+                api_response = self.parse_and_call(llm_response)
 
-                if api_info:
-                    # Step 5: Call the API using self.call_api
-                    plugin_name = api_info['plugin_name']
-                    operation_id = api_info['operation_id']
-                    parameters = api_info['parameters']
+                if api_response is not None:
+                    # Step 5: Build a new call to the passed LLM function with API response summary
+                    llm_summary = api_return_template.format(
+                        user_message=user_message,
+                        api_info=api_info,
+                        api_response=api_response
+                    )
 
-                    print(f"Using {plugin_name}")
-
-                    api_response = self.call_api(plugin_name, operation_id, parameters)
-
-                    if api_response is not None:
-                        # Step 7: Build a new call to the passed LLM function with API response summary
-                        llm_summary = api_return_template.format(
-                            user_message=user_message,
-                            api_info=api_info,
-                            api_response=api_response.text
-                        )
-
-                        # Step 8: Return the updated response
-                        return llm_function(llm_summary, *args, **kwargs)
+                    # Step 6: Return the updated response
+                    return llm_function(llm_summary, *args, **kwargs)
 
             # Return the original LLM response if no API calls were made
             return llm_response
