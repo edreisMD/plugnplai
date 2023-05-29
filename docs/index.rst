@@ -8,6 +8,18 @@ Plug and Plai is an open source library aiming to simplify the integration of AI
 
 It provides utility functions to get a list of active plugins from https://plugnplai.com/ directory, get plugin manifests, and extract OpenAPI specifications and load plugins.
 
+## Installation
+
+You can install Plug and PlAI using pip:
+
+```python
+pip install plugnplai
+```
+
+## Quick Start Example
+
+**Apply Plugins in Three Steps:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/apply_plugins_three_steps.ipynb)
+
 
 .. toctree::
    :maxdepth: 1
@@ -46,5 +58,3 @@ It provides utility functions to get a list of active plugins from https://plugn
 
    
    reference/modules.rst
-
-
