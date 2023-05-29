@@ -116,7 +116,7 @@ plugins.activate(name3)
 plugins.deactivate(name3)
 ```
 
-### Prompt and Tokens
+### Prompt and Tokens Counting
 
 The `plugins.prompt` attribute contains a prompt with descriptions of the active plugins.
 The `plugins.tokens` attribute contains the number of tokens in the prompt.
