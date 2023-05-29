@@ -26,20 +26,6 @@ pip install plugnplai
 **Plugins Retrieval:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
 
-## Prompt and Tokens
-
-The `plugins.prompt` attribute contains a prompt with descriptions of the active plugins.
-The `plugins.tokens` attribute contains the number of tokens in the prompt.
-
-For example:
-```python
-plugins = Plugins.install_and_activate(urls)
-print(plugins.prompt)
-print(plugins.tokens)
-```
-
-This will print the prompt with plugin descriptions and the number of tokens.
-
 ## Usage
 
 ### Get a list of plugins
@@ -128,14 +114,21 @@ plugins.activate(name3)
 
 # Deactivate the last plugin
 plugins.deactivate(name3)
+```
 
-# Print the names of the active plugins
-print(plugins.list_active)
+### Prompt and Tokens
 
-# Look at the current prompt
+The `plugins.prompt` attribute contains a prompt with descriptions of the active plugins.
+The `plugins.tokens` attribute contains the number of tokens in the prompt.
+
+For example:
+```python
+plugins = Plugins.install_and_activate(urls)
 print(plugins.prompt)
 print(plugins.tokens)
 ```
+
+This will print the prompt with plugin descriptions and the number of tokens.
 
 ### Plugins Retrieval
 **Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
