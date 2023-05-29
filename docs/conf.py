@@ -26,6 +26,7 @@ extensions = [
     "sphinx_rtd_theme",
     "sphinx.ext.mathjax",
     "myst_nb",
+    "sphinx_book_theme"
 ]
 
 myst_heading_anchors = 4
@@ -44,7 +45,12 @@ html_theme = "sphinx-book-theme"
 html_title = project + " " + "0.0.1"
 # html_static_path = ["_static"]
 
-html_css_files = [
-    "css/custom.css",
-]
+html_theme_options = {
+    "repository_url": "https://github.com/edreisMD/plugnplai",
+    "use_edit_page_button": True,
+    "use_issues_button": True,
+    "use_repository_button": True,
+    "use_download_button": True,
+}
+
 nb_execution_mode = "off"
