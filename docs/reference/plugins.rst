@@ -1,8 +1,6 @@
 Plugins
 ==============================
 
-.. autoclass:: plugnplai.plugins
+.. autoclass:: plugnplai.plugins.Plugins
    :members:
-   :inherited-members:
    :undoc-members:
-   :show-inheritance:

@@ -46,6 +46,5 @@ It provides utility functions to get a list of active plugins from https://plugn
    :hidden:
 
    
-   reference/plugin_object.rst
    reference/plugins.rst
    reference/embeddings.rst
