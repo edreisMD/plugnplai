@@ -73,10 +73,10 @@ PluginObject
    :undoc-members:
    :show-inheritance:
 
-This class represents an AI plugin object.
+This class represents an AI plugin object.  
 
 Attributes
-----------
+----------  
 openapi : dict
     The OpenAPI specification for the plugin.
 info : dict
@@ -88,7 +88,17 @@ servers : list
 manifest : dict
     The plugin manifest.
 url : str
-    URL of the plugin.
+    The plugin URL.
+name_for_model : str
+    The plugin name.
+description_for_model : str
+    The plugin description.
+operation_details_dict : dict
+    A dictionary containing details for each operation in the plugin.
+description_prompt : str
+    A prompt describing the plugin operations.
+tokens : int
+    The number of tokens in the description_prompt.
 
 Returns 
 -------
