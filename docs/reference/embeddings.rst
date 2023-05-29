@@ -1,7 +1,5 @@
-.. _Embeddings:
-
 Embeddings
-==============================
+==============================  
 
 .. automodule:: plugnplai.embeddings
    :members:
