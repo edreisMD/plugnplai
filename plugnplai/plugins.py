@@ -6,32 +6,58 @@ from plugnplai.prompt_templates import *
 
 
 def count_tokens(text: str, model_name: str = "gpt-4") -> int:
+    """
+    Count the number of tokens in a text.
+
+    Parameters:
+    text (str): The input text.
+    model_name (str): The name of the GPT model. Defaults to "gpt-4".
+
+    Returns:
+    int: The number of tokens in the text.
+    """
     encoding = tiktoken.encoding_for_model(model_name)
     num_tokens = len(encoding.encode(text))
     return num_tokens
 
 
 def build_request_body(schema: Dict[str, Any], parameters: Dict[str, Any]) -> Any:
-  if schema.get('type') == 'object':
-      properties = schema.get('properties', {})
-      required = schema.get('required', [])
+    
+    """Build the request body for an API call.
 
-      body = {}
-      for param_name, param_schema in properties.items():
-          if param_name in parameters:
-              body[param_name] = parameters[param_name]
-          elif param_name in required:
-              print(f'Required parameter {param_name} is missing')
-              return None
+    Parameters
+    ----------
+    schema : Dict[str, Any]
+        The schema for the request body.
+    parameters : Dict[str, Any]
+        The parameters to pass to the API call.
 
-      return body
+    Returns
+    -------
+    Any
+        The request body.
+    """
+    
+    if schema.get('type') == 'object':
+        properties = schema.get('properties', {})
+        required = schema.get('required', [])
 
-  return None
+        body = {}
+        for param_name, param_schema in properties.items():
+            if param_name in parameters:
+                body[param_name] = parameters[param_name]
+            elif param_name in required:
+                print(f'Required parameter {param_name} is missing')
+                return None
+
+        return body
+
+    return None
 
 
 class PluginObject():
     """Represents an AI plugin object.
-    
+
     Attributes
     ----------
     openapi : dict
@@ -56,19 +82,27 @@ class PluginObject():
         A prompt describing the plugin operations.
     tokens : int
         The number of tokens in the description_prompt.
+
+    Methods
+    -------
+    __init__(self, url: str, spec: Dict[str, Any], manifest: Dict[str, Any])
+        Initialize the PluginObject.
+    get_operation_details(self)
+        Get the details for each operation in the plugin.
+    call_operation(self, operation_id: str, parameters: Dict[str, Any])
+        Call an operation in the plugin.
+    describe_api(self)
+        Generate a prompt describing the plugin operations.
     """
     
     def __init__(self, url: str, spec: Dict[str, Any], manifest: Dict[str, Any]):
-        """Initialize the PluginObject.
-        
-        Parameters
-        ----------
-        url : str
-            The plugin URL.
-        spec : dict
-            The OpenAPI specification.
-        manifest : dict
-            The plugin manifest.
+        """
+        Initialize the PluginObject.
+
+        Parameters:
+        url (str): The plugin URL.
+        spec (dict): The OpenAPI specification.
+        manifest (dict): The plugin manifest.
         """
         self.openapi = spec.get('openapi')
         self.info = spec.get('info')
@@ -85,12 +119,11 @@ class PluginObject():
 
 
     def get_operation_details(self) -> Dict[str, Any]:
-        """Get the details for each operation in the plugin.
-        
-        Returns
-        -------
-        dict
-            A dictionary containing details for each operation.
+        """
+        Get the details for each operation in the plugin.
+
+        Returns:
+        dict: A dictionary containing details for each operation.
         """
         operation_details_dict = {}
 
@@ -287,7 +320,7 @@ class Plugins:
         The maximum number of plugins that can be active at once.
     """
     
-    def __init__(self, urls: List[str], template: str = template_gpt4):
+    def __init__(self, urls: List[str],template: str = None):
         """Initialize the Plugins class.
         
         Parameters
@@ -299,7 +332,7 @@ class Plugins:
         """
         self.installed_plugins = {}
         self.active_plugins = {}
-        self.template = template
+        self.template = template or template_gpt4
         self.prompt = None
         self.tokens = None
         self.max_plugins = 3
@@ -307,7 +340,7 @@ class Plugins:
         self.install_plugins(urls)
 
     @classmethod
-    def install_and_activate(cls, urls: Union[str, List[str]], template: str = template_gpt4):
+    def install_and_activate(cls, urls: Union[str, List[str]], template: Optional[str] = None):
         """Install plugins from URLs and activate them.
         
         Parameters
@@ -324,7 +357,7 @@ class Plugins:
         """
         if isinstance(urls, str):
             urls = [urls]
-            
+        template = template or template_gpt4    
         instance = cls(urls, template)
         for plugin_name in instance.installed_plugins.keys():
             instance.activate(plugin_name)
