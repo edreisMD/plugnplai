@@ -1,5 +1,6 @@
 import requests
 from typing import Any, Dict, Optional, List, Callable, Union
+import typer
 import tiktoken
 from plugnplai.utils import spec_from_url, parse_llm_response
 from plugnplai.prompt_templates import *
@@ -312,8 +313,6 @@ class Plugins:
         A dictionary of active PluginObject instances, keyed by plugin name.
     template : str
         The prompt template to use.
-    prompt : str
-        The generated prompt with descriptions of active plugins.
     tokens : int
         The number of tokens in the prompt.
     max_plugins : int
@@ -333,7 +332,6 @@ class Plugins:
         self.installed_plugins = {}
         self.active_plugins = {}
         self.template = template or template_gpt4
-        self.prompt = None
         self.tokens = None
         self.max_plugins = 3
 
@@ -418,8 +416,7 @@ class Plugins:
             return
 
         self.active_plugins[plugin_name] = plugin
-        self.prompt = self.fill_prompt(self.template)
-        self.tokens = count_tokens(self.prompt)
+        self.tokens = count_tokens(self.get_prompt())
 
     def deactivate(self, plugin_name: str):
         """Deactivate an active plugin.
@@ -431,18 +428,17 @@ class Plugins:
         """
         if plugin_name in self.active_plugins:
             del self.active_plugins[plugin_name]
-            self.prompt = self.fill_prompt(self.template)
-            self.tokens = count_tokens(self.prompt)
-
-    def fill_prompt(self, template: str, active_plugins: Optional[List[str]] = None) -> str:
+            self.tokens = count_tokens(self.get_prompt())
+            
+    def get_prompt(self, active_plugins: Optional[List[str]] = None, verbose: bool = False) -> str:
         """Generate a prompt with descriptions of active plugins.
         
         Parameters
         ----------
-        template : str
-            The prompt template to use.
         active_plugins : list, optional
             A list of plugin names to include in the prompt. If None, uses all active plugins. 
+        verbose : bool, optional
+            Whether to print the prompt. Defaults to False.
             
         Returns
         -------
@@ -460,8 +456,9 @@ class Plugins:
             api_description = openapi_object.describe_api()
             plugins_descriptions += f'### Plugin {i}\n{api_description}\n\n'
 
-        prompt = template.replace('{{plugins}}', plugins_descriptions)
-
+        prompt = self.template.replace('{{plugins}}', plugins_descriptions)
+        if verbose:
+            typer.echo(prompt)
         return prompt
 
     def count_prompt_tokens(self) -> int:
@@ -473,7 +470,7 @@ class Plugins:
             The number of tokens in the prompt.
         """
         tokenizer = Tokenizer(models.Model.load("gpt-4"))
-        tokens = tokenizer.encode(self.prompt)
+        tokens = tokenizer.encode(self.get_prompt())
         return len(tokens)
 
     def call_api(self, plugin_name: str, operation_id: str, parameters: Dict[str, Any]) -> Optional[requests.Response]:
@@ -558,7 +555,7 @@ class Plugins:
         """
         def decorator(user_message: str, *args: Any, **kwargs: Any) -> str:
             # Step 1: Add self.prompt as a prefix of the user's message
-            message_with_prompt = f"{self.prompt}\n{user_message}"
+            message_with_prompt = f"{self.get_prompt()}\n{user_message}"
 
             # Step 2: Call the passed LLM function with the updated message and additional arguments
             llm_response = llm_function(message_with_prompt, *args, **kwargs)
