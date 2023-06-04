@@ -21,23 +21,18 @@ def count_tokens(text: str, model_name: str = "gpt-4") -> int:
     return num_tokens
 
 
-def build_request_body(schema: Dict[str, Any], parameters: Dict[str, Any]) -> Any:
-    
-    """Build the request body for an API call.
-
-    Parameters
-    ----------
-    schema : Dict[str, Any]
-        The schema for the request body.
-    parameters : Dict[str, Any]
-        The parameters to pass to the API call.
-
-    Returns
-    -------
-    Any
-        The request body.
+def build_request_body(schema: Dict[str, Any], parameters: Dict[str, Any], api_key: Optional[str] = None) -> Any:
     """
-    
+    Build the request body for an API call.
+
+    Parameters:
+    schema (Dict[str, Any]): The schema for the request body.
+    parameters (Dict[str, Any]): The parameters to pass to the API call.
+    api_key (str, optional): The API key for authorization. Defaults to None.
+
+    Returns:
+    Any: The request body.
+    """
     if schema.get('type') == 'object':
         properties = schema.get('properties', {})
         required = schema.get('required', [])
@@ -50,7 +45,14 @@ def build_request_body(schema: Dict[str, Any], parameters: Dict[str, Any]) -> An
                 print(f'Required parameter {param_name} is missing')
                 return None
 
-        return body
+        # Add a fixed parameter "user_gid"
+        body["user_gid"] = 1204752029826961
+
+        headers = {}
+        if api_key:
+            headers['Authorization'] = f'Bearer 1/1204752029826961:97cd325906c14ff3db64352faa7dcf2e'
+
+        return body, headers
 
     return None
 
