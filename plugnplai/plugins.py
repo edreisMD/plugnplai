@@ -338,6 +338,17 @@ class Plugins:
         self.max_plugins = 3
 
         self.install_plugins(urls)
+    def install_plugin(self, url):
+        """Install a new plugin from a URL without overwriting existing plugins.
+
+        Parameters
+        ----------
+        url : str
+            The plugin URL.
+        """
+        manifest, openapi_spec = spec_from_url(url)
+        openapi_object = PluginObject(url, openapi_spec, manifest)
+        self.installed_plugins[openapi_object.name_for_model] = openapi_object
 
     @classmethod
     def install_and_activate(cls, urls: Union[str, List[str]], template: Optional[str] = None):
