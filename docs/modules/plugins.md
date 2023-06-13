@@ -82,4 +82,4 @@ Manages installed and active plugins.
 - `__init__(self, urls: List[str], template: str = None)`: Initialize the Plugins class.
 - `install_and_activate(cls, urls: Union[str, List[str]], template: Optional[str] = None)`: Install plugins from URLs and activate them.
 - `list_installed(self) -> List[str]`: Get a list of installed plugin names.
-- `list_active(self) ->
+- `list_active(self) -> Get a list of active plugin names. (Max 3 active plugins)
