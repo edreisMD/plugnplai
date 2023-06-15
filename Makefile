@@ -11,7 +11,11 @@ lint:
 	flake8
 
 dev-lint:
+dev-lint:
 	pip install --upgrade black==22.8.0 coverage isort flake8 flake8-bugbear flake8-comprehensions pre-commit pooch
+
+test:
+	pytest tests/
 
 build-docs:
 	set -e
@@ -19,8 +23,7 @@ build-docs:
 	rm -rf docs/build
 	rm -rf docs/source/generated
 	cd docs && make html
-
-all: autoformat build-docs
+all: autoformat lint test build-docs
 # Docs
 watch-docs: ## Build and watch documentation
 	sphinx-autobuild docs/ docs/_build/html --open-browser --watch $(GIT_ROOT)/plugnplai
