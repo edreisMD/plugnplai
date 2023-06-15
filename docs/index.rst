@@ -38,6 +38,8 @@ It provides utility functions to get a list of active plugins from https://plugn
    :hidden:
 
    modules/utility-functions.md
+   modules/plugins.md
+   modules/embeddings.md
 
 
 .. toctree::
