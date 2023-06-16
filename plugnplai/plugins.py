@@ -593,3 +593,29 @@ class Plugins:
             return llm_response
 
         return decorator
+
+    def functions(self) -> List[Dict[str, Any]]:
+        '''Generate a list of JSON objects describing the active plugins.
+
+        Returns
+        -------
+        list
+            A list of JSON objects, each describing an active plugin.
+        '''
+        functions_list = []
+        for plugin in self.active_plugins.values():
+            function = {
+                'name': plugin.name_for_model,
+                'description': plugin.description_for_model,
+                'parameters': [
+                    {
+                        'name': param['name'],
+                        'type': param['type'],
+                        'description': param.get('description')
+                    }
+                    for operation in plugin.operation_details_dict.values()
+                    for param in operation.get('parameters', [])
+                ]
+            }
+            functions_list.append(function)
+        return functions_list
