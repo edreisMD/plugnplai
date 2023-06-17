@@ -607,9 +607,9 @@ class Plugins:
         '''
         functions_list = []
         for plugin in self.active_plugins.values():
-            for operation in plugin.operation_details_dict.values():
+            for operation_id, operation in plugin.operation_details_dict.items():
                 function = {
-                    'name': plugin.name_for_model + "_" + operation.get('operation_id'),
+                    'name': plugin.name_for_model + "_" + operation_id,
                     'description': plugin.description_for_model,
                     'parameters': [
                         {
