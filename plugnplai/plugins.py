@@ -611,14 +611,23 @@ class Plugins:
                 function = {
                     'name': plugin.name_for_model + "_" + operation_id,
                     'description': plugin.description_for_model,
-                    'parameters': [
-                        {
-                            'name': param['name'],
-                            'type': param['type'],
-                            'description': param.get('description')
-                        }
-                        for param in operation.get('parameters', [])
-                    ]
                 }
-            functions_list.append(function)
+                # Add name, type and description of parameters operation['parameters'] or operation['requestBody']
+                if 'parameters' in operation:
+                    function['parameters'] = []
+                    for parameter in operation['parameters']:
+                        function['parameters'].append({
+                            'name': parameter['name'],
+                            'type': parameter['schema']['type'],
+                            'description': parameter['description'],
+                        })
+                elif 'requestBody' in operation:
+                    function['parameters'] = []
+                    for parameter in operation['requestBody']['content']['application/json']['schema']['properties']:
+                        function['parameters'].append({
+                            'name': parameter,
+                            'type': operation['requestBody']['content']['application/json']['schema']['properties'][parameter]['type'],
+                            'description': operation['requestBody']['description'],
+                        })
+                functions_list.append(function)
         return functions_list
