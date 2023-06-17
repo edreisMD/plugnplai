@@ -335,6 +335,7 @@ class Plugins:
         self.template = template or template_gpt4
         self.prompt = None
         self.tokens = None
+        self.functions = None
         self.max_plugins = 3
 
         self.install_plugins(urls)
@@ -420,6 +421,7 @@ class Plugins:
         self.active_plugins[plugin_name] = plugin
         self.prompt = self.fill_prompt(self.template)
         self.tokens = count_tokens(self.prompt)
+        self.functions = self.build_functions()
 
     def deactivate(self, plugin_name: str):
         """Deactivate an active plugin.
@@ -433,6 +435,7 @@ class Plugins:
             del self.active_plugins[plugin_name]
             self.prompt = self.fill_prompt(self.template)
             self.tokens = count_tokens(self.prompt)
+            self.functions = self.build_functions()
 
     def fill_prompt(self, template: str, active_plugins: Optional[List[str]] = None) -> str:
         """Generate a prompt with descriptions of active plugins.
@@ -594,7 +597,7 @@ class Plugins:
 
         return decorator
 
-    def functions(self) -> List[Dict[str, Any]]:
+    def build_functions(self) -> List[Dict[str, Any]]:
         '''Generate a list of JSON objects describing the active plugins.
 
         Returns
