@@ -607,18 +607,18 @@ class Plugins:
         '''
         functions_list = []
         for plugin in self.active_plugins.values():
-            function = {
-                'name': plugin.name_for_model,
-                'description': plugin.description_for_model,
-                'parameters': [
-                    {
-                        'name': param['name'],
-                        'type': param['type'],
-                        'description': param.get('description')
-                    }
-                    for operation in plugin.operation_details_dict.values()
-                    for param in operation.get('parameters', [])
-                ]
-            }
+            for operation in plugin.operation_details_dict.values():
+                function = {
+                    'name': plugin.name_for_model + "_" + operation.get('operation_id'),
+                    'description': plugin.description_for_model,
+                    'parameters': [
+                        {
+                            'name': param['name'],
+                            'type': param['type'],
+                            'description': param.get('description')
+                        }
+                        for param in operation.get('parameters', [])
+                    ]
+                }
             functions_list.append(function)
         return functions_list
