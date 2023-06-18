@@ -156,8 +156,7 @@ class PluginObject():
                             'required': parameter.get('required', False),
                             'type': parameter['schema'].get('type'),
                         })
-
-                    # Store request body details
+                    
                     if 'requestBody' in operation:
                         operation_details['requestBody'] = {
                             'description': operation['requestBody'].get('description'),
@@ -612,22 +611,26 @@ class Plugins:
                     'name': plugin.name_for_model + "_" + operation_id,
                     'description': plugin.description_for_model,
                 }
-                # Add name, type and description of parameters operation['parameters'] or operation['requestBody']
+                
+                
                 if 'parameters' in operation:
                     function['parameters'] = []
                     for parameter in operation['parameters']:
                         function['parameters'].append({
-                            'name': parameter['name'],
-                            'type': parameter['schema']['type'],
-                            'description': parameter['description'],
+                            'name': parameter.get('name'),
+                            'type': parameter.get('type'),
+                            'description': parameter.get('description'),
                         })
+
                 elif 'requestBody' in operation:
                     function['parameters'] = []
-                    for parameter in operation['requestBody']['content']['application/json']['schema']['properties']:
-                        function['parameters'].append({
-                            'name': parameter,
-                            'type': operation['requestBody']['content']['application/json']['schema']['properties'][parameter]['type'],
-                            'description': operation['requestBody']['description'],
-                        })
+                    for media_type, media_type_obj in operation['requestBody'].get('content', {}).items():
+                        for name, schema in media_type_obj.get('schema', {}).get('properties', {}).items():
+                            function['parameters'].append({
+                                'name': name,
+                                'type': schema.get('type'),
+                                'description': schema.get('description'),
+                            })
+
                 functions_list.append(function)
         return functions_list
