@@ -616,7 +616,6 @@ class Plugins:
                     function['parameters'] = {}
                     for parameter in operation['parameters']:
                         name = parameter.get('name')
-                        print(name)
                         function['parameters'][name] = {
                             'type': parameter.get('type'),
                             'description': parameter.get('description'),
