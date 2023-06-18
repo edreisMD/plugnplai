@@ -612,25 +612,31 @@ class Plugins:
                     'description': plugin.description_for_model,
                 }
                 
-                
-                if 'parameters' in operation:
-                    function['parameters'] = []
+                if operation['parameters'] != []:
+                    function['parameters'] = {}
                     for parameter in operation['parameters']:
-                        function['parameters'].append({
-                            'name': parameter.get('name'),
+                        name = parameter.get('name')
+                        print(name)
+                        function['parameters'][name] = {
                             'type': parameter.get('type'),
                             'description': parameter.get('description'),
-                        })
+                            'required': parameter.get('required')
+                        }
+                else:
+                    if operation.get('requestBody') != []:
+                        function['parameters'] = {}
+                        function['parameters']["type"] = "object"
+                        function['parameters']["properties"] = {}
+                        function['parameters']["required"] = []
 
-                elif 'requestBody' in operation:
-                    function['parameters'] = []
-                    for media_type, media_type_obj in operation['requestBody'].get('content', {}).items():
-                        for name, schema in media_type_obj.get('schema', {}).get('properties', {}).items():
-                            function['parameters'].append({
-                                'name': name,
-                                'type': schema.get('type'),
-                                'description': schema.get('description'),
-                            })
-
+                        for media_type, media_type_obj in operation['requestBody'].get('content', {}).items():
+                            for name, schema in media_type_obj.get('schema', {}).get('properties', {}).items():
+                                function['parameters']['properties'][name] = {
+                                    'type': schema.get('type'),
+                                    'description': schema.get('description'),
+                                }
+                                if schema.get('required'):
+                                    function['parameters']['required'].append(name)
+                                
                 functions_list.append(function)
         return functions_list
