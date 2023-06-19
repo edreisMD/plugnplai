@@ -156,8 +156,7 @@ class PluginObject():
                             'required': parameter.get('required', False),
                             'type': parameter['schema'].get('type'),
                         })
-
-                    # Store request body details
+                    
                     if 'requestBody' in operation:
                         operation_details['requestBody'] = {
                             'description': operation['requestBody'].get('description'),
@@ -320,7 +319,7 @@ class Plugins:
         The maximum number of plugins that can be active at once.
     """
     
-    def __init__(self, urls: List[str],template: str = None):
+    def __init__(self, urls: Union[str, List[str]],template: str = None):
         """Initialize the Plugins class.
         
         Parameters
@@ -330,11 +329,15 @@ class Plugins:
         template : str, optional
             The prompt template to use. Defaults to template_gpt4.
         """
+        if isinstance(urls, str):
+            urls = [urls]
+
         self.installed_plugins = {}
         self.active_plugins = {}
         self.template = template or template_gpt4
         self.prompt = None
         self.tokens = None
+        self.functions = None
         self.max_plugins = 3
 
         self.install_plugins(urls)
@@ -420,6 +423,7 @@ class Plugins:
         self.active_plugins[plugin_name] = plugin
         self.prompt = self.fill_prompt(self.template)
         self.tokens = count_tokens(self.prompt)
+        self.functions = self.build_functions()
 
     def deactivate(self, plugin_name: str):
         """Deactivate an active plugin.
@@ -433,6 +437,7 @@ class Plugins:
             del self.active_plugins[plugin_name]
             self.prompt = self.fill_prompt(self.template)
             self.tokens = count_tokens(self.prompt)
+            self.functions = self.build_functions()
 
     def fill_prompt(self, template: str, active_plugins: Optional[List[str]] = None) -> str:
         """Generate a prompt with descriptions of active plugins.
@@ -463,18 +468,6 @@ class Plugins:
         prompt = template.replace('{{plugins}}', plugins_descriptions)
 
         return prompt
-
-    def count_prompt_tokens(self) -> int:
-        """Count the number of tokens in the prompt.
-        
-        Returns
-        -------
-        int
-            The number of tokens in the prompt.
-        """
-        tokenizer = Tokenizer(models.Model.load("gpt-4"))
-        tokens = tokenizer.encode(self.prompt)
-        return len(tokens)
 
     def call_api(self, plugin_name: str, operation_id: str, parameters: Dict[str, Any]) -> Optional[requests.Response]:
         """Call an operation in an active plugin.
@@ -593,3 +586,47 @@ class Plugins:
             return llm_response
 
         return decorator
+
+    def build_functions(self) -> List[Dict[str, Any]]:
+        '''Generate a list of JSON objects describing the active plugins.
+
+        Returns
+        -------
+        list
+            A list of JSON objects, each describing an active plugin.
+        '''
+        functions_list = []
+        for plugin in self.active_plugins.values():
+            for operation_id, operation in plugin.operation_details_dict.items():
+                function = {
+                    'name': plugin.name_for_model + "_" + operation_id,
+                    'description': plugin.description_for_model,
+                }
+                
+                if operation['parameters'] != []:
+                    function['parameters'] = {}
+                    for parameter in operation['parameters']:
+                        name = parameter.get('name')
+                        function['parameters'][name] = {
+                            'type': parameter.get('type'),
+                            'description': parameter.get('description'),
+                            'required': parameter.get('required')
+                        }
+                else:
+                    if operation['requestBody'] != None:
+                        function['parameters'] = {}
+                        function['parameters']["type"] = "object"
+                        function['parameters']["properties"] = {}
+                        function['parameters']["required"] = []
+
+                        for media_type, media_type_obj in operation['requestBody'].get('content', {}).items():
+                            for name, schema in media_type_obj.get('schema', {}).get('properties', {}).items():
+                                function['parameters']['properties'][name] = {
+                                    'type': schema.get('type'),
+                                    'description': schema.get('description'),
+                                }
+                                if schema.get('required'):
+                                    function['parameters']['required'].append(name)
+                                
+                functions_list.append(function)
+        return functions_list
