@@ -51,6 +51,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 debug.py
+debug.ipynb
 
 # Translations
 *.mo

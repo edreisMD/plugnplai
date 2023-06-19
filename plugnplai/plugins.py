@@ -319,7 +319,7 @@ class Plugins:
         The maximum number of plugins that can be active at once.
     """
     
-    def __init__(self, urls: List[str],template: str = None):
+    def __init__(self, urls: Union[str, List[str]],template: str = None):
         """Initialize the Plugins class.
         
         Parameters
@@ -329,6 +329,9 @@ class Plugins:
         template : str, optional
             The prompt template to use. Defaults to template_gpt4.
         """
+        if isinstance(urls, str):
+            urls = [urls]
+
         self.installed_plugins = {}
         self.active_plugins = {}
         self.template = template or template_gpt4
@@ -465,18 +468,6 @@ class Plugins:
         prompt = template.replace('{{plugins}}', plugins_descriptions)
 
         return prompt
-
-    def count_prompt_tokens(self) -> int:
-        """Count the number of tokens in the prompt.
-        
-        Returns
-        -------
-        int
-            The number of tokens in the prompt.
-        """
-        tokenizer = Tokenizer(models.Model.load("gpt-4"))
-        tokens = tokenizer.encode(self.prompt)
-        return len(tokens)
 
     def call_api(self, plugin_name: str, operation_id: str, parameters: Dict[str, Any]) -> Optional[requests.Response]:
         """Call an operation in an active plugin.
@@ -622,7 +613,7 @@ class Plugins:
                             'required': parameter.get('required')
                         }
                 else:
-                    if operation.get('requestBody') != []:
+                    if operation['requestBody'] != None:
                         function['parameters'] = {}
                         function['parameters']["type"] = "object"
                         function['parameters']["properties"] = {}
