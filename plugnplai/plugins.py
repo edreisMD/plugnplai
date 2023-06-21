@@ -168,8 +168,7 @@ class PluginObject():
 
         return operation_details_dict
 
-
-    def call_operation(self, operation_id: str, parameters: Dict[str, Any]) -> Optional[requests.Response]:
+    def call_operation(self, operation_id: str, parameters: Dict[str, Any], original_url, api_key, user_id):
         """Call an operation in the plugin.
         
         Parameters
@@ -216,25 +215,24 @@ class PluginObject():
         for name, value in path_parameters.items():
             url = url.replace('{' + name + '}', str(value))
 
+        is_user_http = self.manifest.get("auth", {}).get("type", "")
+        if is_user_http:
+            header_parameters["Authorization"] = f"Bearer {api_key}"
+            header_parameters["Accept"] = "application/json"
+
         # Make the API call
         method = operation_details['method']
         if method.lower() == 'get':
             response = requests.get(url, params=query_parameters, headers=header_parameters, cookies=cookie_parameters)
         elif method.lower() == 'post':
-            headers = {'Content-Type': 'application/json'}
-            response = requests.post(url, params=query_parameters, headers=headers, cookies=cookie_parameters, json=body)
+            header_parameters['Content-Type'] = 'application/json'
+            response = requests.post(url, params=query_parameters, headers=header_parameters, cookies=cookie_parameters,
+                                    json=parameters)
 
         return response
 
 
     def describe_api(self) -> str:
-        """Generate a prompt describing the plugin operations.
-        
-        Returns
-        -------
-        str
-            The generated prompt.
-        """
         # Template for the whole API description
         api_template = '// {description_for_model}\nnamespace {name_for_model} {{{operations}}}'
         
@@ -469,7 +467,8 @@ class Plugins:
 
         return prompt
 
-    def call_api(self, plugin_name: str, operation_id: str, parameters: Dict[str, Any]) -> Optional[requests.Response]:
+    def call_api(self, plugin_name: str, operation_id: str, parameters: Dict[str, Any], url=None, api_key=None, user_id=None) -> Optional[
+        requests.Response]:
         """Call an operation in an active plugin.
         
         Parameters
@@ -501,7 +500,7 @@ class Plugins:
             return None
 
         # Call the operation
-        response = openapi_object.call_operation(operation_id, parameters)
+        response = openapi_object.call_operation(operation_id, parameters, url, api_key, user_id)
 
         return response
 
