@@ -14,7 +14,9 @@ pip install plugnplai
 
 ## Quick Start Example
 
-**Load and Call Step by Step:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
+**Plugins Retrieval API - https://www.plugnplai.com/_functions/retrieve?text={user_message_here}:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/retrieve_plugins_api.ipynb)
+
+**Use an Specific Plugin - Step by Step:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
 
 
 ## More Examples
@@ -171,7 +173,10 @@ def call_llm(user_input):
 To more details on the implementation of these steps, see example "Step by Step": [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
 
 ### Plugins Retrieval
-**Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
+
+**PlugnPlai Retrieval API - https://www.plugnplai.com/_functions/retrieve?text={user_message_here} :** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/retrieve_plugins_api.ipynb)
+
+**Build our own Plugins Vector Database:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
 
 ```python

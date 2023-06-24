@@ -319,7 +319,7 @@ class Plugins:
         The maximum number of plugins that can be active at once.
     """
     
-    def __init__(self, urls: Union[str, List[str]],template: str = None):
+    def __init__(self, urls: Union[str, List[str], List[PluginObject]], template: str = None):
         """Initialize the Plugins class.
         
         Parameters
@@ -386,7 +386,7 @@ class Plugins:
         """
         return list(self.active_plugins.keys())
 
-    def install_plugins(self, urls: Union[str, List[str]]):
+    def install_plugins(self, urls: Union[str, List[str], List[PluginObject]]):
         """Install plugins from URLs.
         
         Parameters
@@ -397,11 +397,16 @@ class Plugins:
         if isinstance(urls, str):
             urls = [urls]
 
+        # if input is a list of PluginObjects, add them directly
+        if isinstance(urls[0], PluginObject):
+            for plugin in urls:
+                self.installed_plugins[plugin.name_for_model] = plugin
+            return
+
         for url in urls:
             manifest, openapi_spec = spec_from_url(url)
             openapi_object = PluginObject(url, openapi_spec, manifest)
             self.installed_plugins[openapi_object.name_for_model] = openapi_object
-
 
     def activate(self, plugin_name: str):
         """Activate an installed plugin.

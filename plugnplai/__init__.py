@@ -9,6 +9,7 @@ from plugnplai.utils import (
 )
 from plugnplai.embeddings import PluginRetriever
 from plugnplai.plugins import PluginObject, Plugins, build_request_body, count_tokens
+from plugnplai.api.retrieve import retrieve
 
 from importlib import metadata
 # use the method from LangChain (Chase, H. (2022). LangChain [Computer software]. https://github.com/hwchase17/langchain) to get the version of the package
@@ -31,5 +32,6 @@ __all__ = [
     "spec_from_url",
     "parse_llm_response",
     "build_request_body",
-    "count_tokens"
+    "count_tokens",
+    "retrieve"
 ]
