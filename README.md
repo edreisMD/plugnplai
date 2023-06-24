@@ -136,7 +136,7 @@ The `parse_llm_response()` function parses an LLM response searching for API cal
 
 ### Call API
 
-The `call_api()` function calls an operation in an active plugin. It takes the plugin name, operation ID, and parameters extracted by `parse_llm_response()` and makes a request to the plugin API. When you want to use the plugin which is having the user or service level authentication pass api_key(string) as parameter.
+The `call_api()` function calls an operation in an active plugin. It takes the plugin name, operation ID, and parameters extracted by `parse_llm_response()` and makes a request to the plugin API. When you want to use the plugin which is having the user or service level or oauth level authentication pass api_key(string) as parameter. For oauth pass the access_token as a api_key parameter. For more detail about oauth authentication please see examples/run_plugin.py and examples/server.py files.
 
 
 ### Apply Plugins

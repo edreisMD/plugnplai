@@ -215,8 +215,7 @@ class PluginObject():
         for name, value in path_parameters.items():
             url = url.replace('{' + name + '}', str(value))
 
-        is_user_http = self.manifest.get("auth", {}).get("type", "")
-        if is_user_http:
+        if self.manifest.get("auth", {}).get("type", "").lower() in ("service_http", "user_http", "oauth"):
             header_parameters["Authorization"] = f"Bearer {api_key}"
             header_parameters["Accept"] = "application/json"
 
