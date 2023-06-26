@@ -14,9 +14,7 @@ pip install plugnplai
 
 ## Quick Start Example
 
-**Plugins Retrieval API - https://www.plugnplai.com/_functions/retrieve?text={user_message_here}:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/retrieve_plugins_api.ipynb)
-
-**Use an Specific Plugin - Step by Step:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
+**Load and Call Step by Step:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
 
 
 ## More Examples
@@ -145,7 +143,11 @@ The `call_api()` function calls an operation in an active plugin. It takes the p
 
 ### Apply Plugins
 
-The `@plugins.apply_plugins` decorator can be used to easily apply active plugins to an LLM function. To use it:
+The `@plugins.apply_plugins` decorator can be used to easily apply active plugins to an LLM function. 
+
+This method is suboptimal for GPT chat models because it doesn't make use of the different available roles on the chat api (system, user, or assistant roles). But it may be useful for other LLM providers or open-source models.
+
+Steps to use it:
 
 1. Import the Plugins class and decorator:
 
@@ -174,11 +176,9 @@ def call_llm(user_input):
 
 To more details on the implementation of these steps, see example "Step by Step": [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
 
+
 ### Plugins Retrieval
-
-**PlugnPlai Retrieval API - https://www.plugnplai.com/_functions/retrieve?text={user_message_here} :** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/retrieve_plugins_api.ipynb)
-
-**Build our own Plugins Vector Database:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
+**Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
 
 ```python
@@ -199,7 +199,7 @@ Plug and Plai is an open source library, and we welcome contributions from the e
 
 #### To dos
 - [x] [Load] Define a default object to read plugins - use LangChain standard? (for now using only manifest and specs jsons)  
-- [ ] [Load] Fix breaking on reading certain plugins specs  
+- [ ] [Load] Fix breaking on reading certain plugins specs
 - [x] [Load] Accept different specs methods and versions (param, query, body)  
 - [x] [Prompt] Build a utility function to return a default prompts for a plugin  
 - [x] [Prompt] Fix prompt building for body (e.g. "Speak")   
@@ -209,18 +209,23 @@ Plug and Plai is an open source library, and we welcome contributions from the e
 - [x] [CallAPI] Build a function to call API given a dictionary of parameters  
 - [x] [CallAPI] Add example for calling API  
 - [ ] [Embeddings] Add filter option (e.g. "working", "ChatGPT") to "PluginRetriever.from_directory()"  
-- [ ] [Docs] Add Sphynx docs  
+- [x] [Docs] Add Sphynx docs  
 - [ ] [Verification] Build automated tests to verify new plugins  
-- [ ] [Verification] Build automated monitoring for working plugins  
+- [x] [Verification] Build automated monitoring for working plugins for plugnplai
+- [ ] [Verification] Build automated monitoring for working plugins for langchain
 - [ ] [Website] Build an open-source website  
+- [x] [Authentication] Add support for OAuth, user and service level authentication
+- [x] [Functions] Automaticly create OpenAI function dictionary for plugins (plugins.functions)
+- [ ] [Model] Create a dataset for finetuning open-source models to call Plugins / APIs. Use the descriptions on plugins.prompt (eventually plugins.functions) as input
+- [ ] [Model] Finetune an open-source model to call Plugins / APIs
 
 #### Project Roadmap
 1. Build auxiliary functions that helps everyone to use plugins as defined by [OpenAI](https://platform.openai.com/docs/plugins/introduction)  
 2. Build in compatibility with different open-source formats (e.g. LangChain, BabyAGI, etc)  
 3. Find a best prompt format for plugins, optimizing for token number and description completness  
-4. Build a dataset to finetune open-source models to call plugins  
-5. Finetune an open-source model to call plugins  
-6. Help with authentication  
+4. Help with authentication  
+5. Build a dataset to finetune open-source models to call plugins  
+6. Finetune an open-source model to call plugins
 7. Etc.  
 
 ## Links
