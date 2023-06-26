@@ -6,7 +6,7 @@ It provides utility functions to get a list of active plugins from [plugnplai.co
 
 ## Installation
 
-You can install Plug and PlAI using pip:
+You can install Plug and Plai using pip:
 
 ```python
 pip install plugnplai
