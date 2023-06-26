@@ -488,6 +488,8 @@ class Plugins:
             The ID of the operation to call.
         parameters : dict
             The parameters to pass to the operation.
+        api_key : str, optional
+            The api key for authentication.
             
         Returns
         -------
