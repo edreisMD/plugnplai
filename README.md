@@ -6,7 +6,7 @@ It provides utility functions to get a list of active plugins from [plugnplai.co
 
 ## Installation
 
-You can install Plug and PlAI using pip:
+You can install Plug and Plai using pip:
 
 ```python
 pip install plugnplai
@@ -138,7 +138,9 @@ The `parse_llm_response()` function parses an LLM response searching for API cal
 
 ### Call API
 
-The `call_api()` function calls an operation in an active plugin. It takes the plugin name, operation ID, and parameters extracted by `parse_llm_response()` and makes a request to the plugin API.
+The `call_api()` function calls an operation in an active plugin. It takes the plugin name, operation ID, and parameters extracted by `parse_llm_response()` and makes a request to the plugin API. 
+
+**Plugin Authentication:** Plugins with Oauth, user or service level authentication pass api_key(string) as parameter. For oauth, use the access_token as the api_key parameter. For more detail about oauth authentication please see [examples/plugin_with_oauth.py](https://github.com/edreisMD/plugnplai/tree/master/examples/plugin_with_auth.py) and [examples/oauth_server.py](https://github.com/edreisMD/plugnplai/tree/master/examples/oauth_server.py) files.
 
 
 ### Apply Plugins
