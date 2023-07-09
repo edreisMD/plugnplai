@@ -345,6 +345,7 @@ class Plugins:
         self.prompt = None
         self.tokens = None
         self.functions = None
+        self.func_tokens = None
         self.max_plugins = 3
 
         self.install_plugins(urls)
@@ -436,6 +437,7 @@ class Plugins:
         self.prompt = self.fill_prompt(self.template)
         self.tokens = count_tokens(self.prompt)
         self.functions = self.build_functions()
+        self.func_tokens = count_tokens(str(self.functions))
 
     def deactivate(self, plugin_name: str):
         """Deactivate an active plugin.
@@ -450,6 +452,7 @@ class Plugins:
             self.prompt = self.fill_prompt(self.template)
             self.tokens = count_tokens(self.prompt)
             self.functions = self.build_functions()
+            self.func_tokens = count_tokens(str(self.functions))
 
     def fill_prompt(self, template: str, active_plugins: Optional[List[str]] = None) -> str:
         """Generate a prompt with descriptions of active plugins.
@@ -614,7 +617,7 @@ class Plugins:
         for plugin in self.active_plugins.values():
             for operation_id, operation in plugin.operation_details_dict.items():
                 function = {
-                    'name': plugin.name_for_model + "_" + operation_id,
+                    'name': plugin.name_for_model + "__opid__" + operation_id,
                     'description': plugin.description_for_model,
                 }
                 
@@ -624,7 +627,7 @@ class Plugins:
                         name = parameter.get('name')
                         function['parameters'][name] = {
                             'type': parameter.get('type'),
-                            'description': parameter.get('description'),
+                            'description': parameter.get('description', ""),
                             'required': parameter.get('required')
                         }
                 else:
@@ -638,7 +641,7 @@ class Plugins:
                             for name, schema in media_type_obj.get('schema', {}).get('properties', {}).items():
                                 function['parameters']['properties'][name] = {
                                     'type': schema.get('type'),
-                                    'description': schema.get('description'),
+                                    'description': schema.get('description', ""),
                                 }
                                 if schema.get('required'):
                                     function['parameters']['required'].append(name)
