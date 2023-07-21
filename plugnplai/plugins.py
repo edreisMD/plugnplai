@@ -619,14 +619,15 @@ class Plugins:
                 }
                 
                 if operation['parameters'] != []:
-                    function['parameters'] = {}
+                    function['parameters'] = {"type": "object", "properties": {}, "required": []}
                     for parameter in operation['parameters']:
                         name = parameter.get('name')
-                        function['parameters'][name] = {
+                        function['parameters']["properties"][name] = {
                             'type': parameter.get('type'),
                             'description': parameter.get('description'),
-                            'required': parameter.get('required')
                         }
+                        if parameter.get('required'):
+                            function['parameters']["required"].append(name)
                 else:
                     if operation['requestBody'] != None:
                         function['parameters'] = {}
